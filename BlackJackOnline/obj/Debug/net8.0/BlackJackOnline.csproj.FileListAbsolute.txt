@@ -1,0 +1,8 @@
+C:\Users\Zakarias\Documents\Egna projekt\BlackJackOnline\obj\Debug\net8.0\BlackJackOnline.csproj.AssemblyReference.cache
+C:\Users\Zakarias\Documents\Egna projekt\BlackJackOnline\obj\Debug\net8.0\BlackJackOnline.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Zakarias\Documents\Egna projekt\BlackJackOnline\obj\Debug\net8.0\BlackJackOnline.AssemblyInfoInputs.cache
+C:\Users\Zakarias\Documents\Egna projekt\BlackJackOnline\obj\Debug\net8.0\BlackJackOnline.AssemblyInfo.cs
+C:\Users\Zakarias\Documents\Egna projekt\BlackJackOnline\obj\Debug\net8.0\BlackJackOnline.csproj.CoreCompileInputs.cache
+C:\Users\Zakarias\Documents\Egna projekt\BlackJackOnline\obj\Debug\net8.0\BlackJackOnline.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Zakarias\Documents\Egna projekt\BlackJackOnline\obj\Debug\net8.0\BlackJackOnline.RazorAssemblyInfo.cache
+C:\Users\Zakarias\Documents\Egna projekt\BlackJackOnline\obj\Debug\net8.0\BlackJackOnline.RazorAssemblyInfo.cs
