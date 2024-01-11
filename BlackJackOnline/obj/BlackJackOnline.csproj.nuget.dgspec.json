@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Zakarias\\Documents\\Egna projekt\\BlackJackOnline\\BlackJackOnline.csproj": {}
+    "C:\\GitHub\\C# VS\\BlackJack\\BlackJackOnline\\BlackJackOnline\\BlackJackOnline.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Zakarias\\Documents\\Egna projekt\\BlackJackOnline\\BlackJackOnline.csproj": {
+    "C:\\GitHub\\C# VS\\BlackJack\\BlackJackOnline\\BlackJackOnline\\BlackJackOnline.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Zakarias\\Documents\\Egna projekt\\BlackJackOnline\\BlackJackOnline.csproj",
+        "projectUniqueName": "C:\\GitHub\\C# VS\\BlackJack\\BlackJackOnline\\BlackJackOnline\\BlackJackOnline.csproj",
         "projectName": "BlackJackOnline",
-        "projectPath": "C:\\Users\\Zakarias\\Documents\\Egna projekt\\BlackJackOnline\\BlackJackOnline.csproj",
+        "projectPath": "C:\\GitHub\\C# VS\\BlackJack\\BlackJackOnline\\BlackJackOnline\\BlackJackOnline.csproj",
         "packagesPath": "C:\\Users\\Zakarias\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Zakarias\\Documents\\Egna projekt\\BlackJackOnline\\obj\\",
+        "outputPath": "C:\\GitHub\\C# VS\\BlackJack\\BlackJackOnline\\BlackJackOnline\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Zakarias\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -51,6 +51,10 @@
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Proxies": {
               "target": "Package",
               "version": "[8.0.1, )"
             },
