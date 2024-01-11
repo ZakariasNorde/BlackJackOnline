@@ -1,0 +1,26 @@
+﻿using static BlackJackOnline.Models.CardEnums;
+
+namespace BlackJackOnline.Models
+{
+	public class Card
+	{
+		public CardSuit Suit { get; set; }
+		public CardValue Value { get; set; }
+
+		public bool IsVisible { get; set; }
+
+		public string ImageName { get; set; }
+		public int score()
+		{
+			if(Value == CardValue.Jack && Value == CardValue.Queen && Value == CardValue.King)
+			{
+				return 10;
+			}
+			if(Value == CardValue.Ace)
+			{
+				return 11;
+			}
+			return (int)Value;
+		}
+	}
+}
