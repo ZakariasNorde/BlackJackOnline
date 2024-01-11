@@ -1,0 +1,38 @@
+﻿@using BlackJack.Models
+@model RegisterViewModel
+
+<H2>Register new User</H2>
+<div asp-validation-summary="All" class=text-danger>
+	<span></span>
+</div>
+<form method="post" asp-action="Register">
+	<div class="form-group row">
+		<div class="col-sm-2">
+			<label>User name: </label>
+		</div>
+		<div class="col-sm-4">
+			<input asp-for="UserName" class="form-control" />
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="col-sm-2">
+			<label>Password: </label>
+		</div>
+		<div class="col-sm-4">
+			<input asp-for="Password" class="form-control" />
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="col-sm-2">
+			<label>Confirm Password: </label>
+		</div>
+		<div class="col-sm-4">
+			<input asp-for="ConfirmPassword" class="form-control" />
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="offset-2 col-sm-4">
+			<button type="submit" class="btn btn-primary">Register</button>
+		</div>
+	</div>
+</form>
