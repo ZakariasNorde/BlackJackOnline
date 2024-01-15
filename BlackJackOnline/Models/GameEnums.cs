@@ -1,6 +1,6 @@
 ﻿namespace BlackJackOnline.Models
 {
-	public class CardEnums
+	public class GameEnums
 	{
 		public enum CardSuit
 		{
@@ -25,5 +25,16 @@
 			Queen = 12,
 			King = 13,
 		}
-	}
+
+        public enum GameState
+        {
+            NotStarted,
+            Betting,
+            Dealing,
+            InProgress,
+            Insurance,
+            Payout,
+            Shuffling
+        }
+    }
 }

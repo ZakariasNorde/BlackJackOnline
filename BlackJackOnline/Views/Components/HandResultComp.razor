@@ -1,0 +1,31 @@
+﻿@using BlackJackOnline.Models;
+
+@code {
+    [Parameter]
+    public Person Player { get; set; }
+
+    [Parameter]
+    public Person Dealer { get; set; }
+}
+
+@if (Player.hasBlackJack
+    && (Player.visibleScore > Dealer.visibleScore || Dealer.isBusted))
+{
+    <h1 class="display-3 text-success">Blackjack!</h1>
+}
+else if (Player.isBusted)
+{
+    <h1 class="display-3 text-danger">Busted...</h1>
+}
+else if (Dealer.isBusted || Player.visibleScore > Dealer.visibleScore)
+{
+    <h1 class="display-3 text-success">Win!</h1>
+}
+else if (Dealer.visibleScore > Player.visibleScore)
+{
+    <h1 class="display-3 text-danger">Lose...</h1>
+}
+else if (Player.visibleScore == Dealer.visibleScore)
+{
+    <h1 class="display-3 text-info">Push</h1>
+}

@@ -16,8 +16,8 @@
 		public void Collect()
 		{
 			Funds += Change;
-			Change = 0;
-			InsuranceBet = 0;
+			Change = 0M;
+			InsuranceBet = 0M;
 		}
 
 	}

@@ -1,4 +1,4 @@
-﻿using static BlackJackOnline.Models.CardEnums;
+﻿using static BlackJackOnline.Models.GameEnums;
 namespace BlackJackOnline.Models
 {
     public class CardDeck

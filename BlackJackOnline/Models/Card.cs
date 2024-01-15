@@ -1,4 +1,4 @@
-﻿using static BlackJackOnline.Models.CardEnums;
+﻿using static BlackJackOnline.Models.GameEnums;
 
 namespace BlackJackOnline.Models
 {
@@ -9,7 +9,15 @@ namespace BlackJackOnline.Models
 
 		public bool IsVisible { get; set; }
 
-		public string ImageName { get; set; }
+		public string ImageName { 
+			get{
+				return $"{Value.ToString()}_of_{Suit.ToString()}.png";
+			}
+			set
+			{
+				ImageName = value;
+			}
+		}
 		public int score()
 		{
 			if(Value == CardValue.Jack && Value == CardValue.Queen && Value == CardValue.King)
@@ -22,5 +30,6 @@ namespace BlackJackOnline.Models
 			}
 			return (int)Value;
 		}
+
 	}
 }

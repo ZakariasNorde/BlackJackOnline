@@ -1,0 +1,188 @@
+﻿@model Game
+@using BlackJackOnline.Models;
+<form method="post" asp-action="BlackJack">   
+<div class="row">
+    <div class="col-3">
+        <div>
+            @{
+                int cardCount = Model.dealer.Deck.Count + 1;
+            }
+            @while (cardCount > 0)
+            {
+                <div class="blackjack-drawdeck">
+                    <img src="~/images/pokercards/cardbackfinal.png" />
+                </div>
+                cardCount -= 13;
+            }
+        </div>
+    </div>
+    <div class="col-3">
+        <HandComp Cards="Model.dealer.Hand" />
+    </div>
+    <div class="col-3">
+        <ScoreComp State="Model.state" Player="Model.dealer" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-3">
+        <MoneyComp Funds="Model.player.Funds" Change="Model.player.Change" />
+    </div>
+    <div class="col-3">
+        @if (Model.state == GameEnums.GameState.Betting)
+        {
+            @if (Model.player.Funds < 10)
+            {
+                <span class="display-3 text-danger">Out of money!</span>
+            }
+            @if (Model.player.Funds >= 10)
+            {
+         
+                <button class="btn btn-primary" id="betButton10">
+                             Bet $10
+                </button>
+
+                <script>
+                    document.getElementById('betButton10').addEventListener('click', function() {
+                    // Call a JavaScript function or make an AJAX request here
+                    Model.Bet(10);
+                    });
+
+                </script>
+            }
+            @if (Model.player.Funds >= 20)
+            {
+                <button class="btn btn-primary" id="betButton20">
+                    Bet $20
+                </button>
+
+                <script>
+                    document.getElementById('betButton20').addEventListener('click', function () {
+                        // Call a JavaScript function or make an AJAX request here
+                        Model.Bet(20);
+                    });
+
+                </script>
+            }
+            @if (Model.player.Funds >= 50)
+            {
+                <button class="btn btn-primary" id="betButton50">
+                    Bet $50
+                </button>
+
+                <script>
+                    document.getElementById('betButton50').addEventListener('click', function () {
+                        // Call a JavaScript function or make an AJAX request here
+                        Model.Bet(50);
+                    });
+
+                </script>
+            }
+        }
+
+        @if (Model.state == GameEnums.GameState.Payout)
+        {
+            <HandResultComp Player="Model.player" Dealer="Model.dealer" />
+        }
+        @if (Model.state == GameEnums.GameState.Dealing
+        || Model.state == GameEnums.GameState.Shuffling
+        || Model.state == GameEnums.GameState.InProgress)
+        {
+            <MessageComp State="Model.state" Bet="Model.player.Bet" />
+        }
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-3">
+        @if (Model.state == GameEnums.GameState.NotStarted || Model.player.Funds < 10)
+        {
+            <button type="submit" name="changed" value="Start" class="btn btn-secondary" id="btn-start">
+            Start Game!
+            </button>
+            <script>
+                document.getElementById('btn-start').addEventListener('click', function () {
+                    // Call a JavaScript function or make an AJAX request here
+                    Model.InitializeHand();
+                });
+
+            </script>
+        }
+        @if (!Model.player.isBusted
+        && Model.state == GameEnums.GameState.InProgress
+        && !Model.player.Standing)
+        {
+            <button class="btn btn-primary" id="btn-Stand">
+                Stand
+            </button>
+            <script>
+                document.getElementById('btn-Stand').addEventListener('click', function () {
+                    // Call a JavaScript function or make an AJAX request here
+                    Model.Stand();
+                });
+
+            </script>
+            <button class="btn btn-primary" id="btn-Hit">
+                Hit
+            </button>
+            <script>
+                document.getElementById('btn-Hit').addEventListener('click', function () {
+                    // Call a JavaScript function or make an AJAX request here
+                    Model.Hit();
+                });
+
+            </script>
+            @if (Model.player.visibleScore >= 9
+           && Model.player.visibleScore <= 11
+           && Model.player.Hand.Count == 2
+           && Model.player.Funds >= Model.player.Bet * 2)
+            {
+                <br />
+                <button class="btn btn-warning" id="btn-Double">
+                    Double Down
+                </button>
+                <script>
+                    document.getElementById('btn-Double').addEventListener('click', function () {
+                        // Call a JavaScript function or make an AJAX request here
+                        Model.DoubleDown();
+                    });
+
+                </script>
+            }
+            @if (Model.dealer.HasAceShowing && !Model.player.HasInsurance)
+            {
+                <br />
+                <button class="btn btn-warning" id="btn-Insurance">
+                    Insurance ($@(Model.player.Bet / 2))
+                </button>
+                <script>
+                    document.getElementById('btn-Insurance').addEventListener('click', function () {
+                        // Call a JavaScript function or make an AJAX request here
+                        Model.Insurance();
+                    });
+
+                </script>
+            }
+        }
+        @if (Model.state == GameEnums.GameState.Payout)
+        {
+            <button class="btn btn-secondary" id="btn-NewHand">
+                Keep Going!
+            </button>
+            <script>
+                document.getElementById('btn-NewHand').addEventListener('click', function () {
+                    // Call a JavaScript function or make an AJAX request here
+                    Model.NewHand();
+                });
+
+            </script>
+        }
+    </div>
+    <div class="col-3">
+        <HandComp Cards="Model.player.Hand" />
+    </div>
+    <div class="col-3">
+        <ScoreComp State="Model.state" Player="Model.player" />
+    </div>
+</div>
+</form>
