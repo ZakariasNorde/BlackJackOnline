@@ -151,3 +151,6 @@ C:\GitHub\C# VS\BlackJack\BlackJackOnline\BlackJackOnline\obj\Debug\net8.0\refin
 C:\GitHub\C# VS\BlackJack\BlackJackOnline\BlackJackOnline\obj\Debug\net8.0\BlackJackOnline.pdb
 C:\GitHub\C# VS\BlackJack\BlackJackOnline\BlackJackOnline\obj\Debug\net8.0\BlackJackOnline.genruntimeconfig.cache
 C:\GitHub\C# VS\BlackJack\BlackJackOnline\BlackJackOnline\obj\Debug\net8.0\ref\BlackJackOnline.dll
+C:\GitHub\C# VS\BlackJack\BlackJackOnline\BlackJackOnline\bin\Debug\net8.0\Microsoft.AspNetCore.Authorization.dll
+C:\GitHub\C# VS\BlackJack\BlackJackOnline\BlackJackOnline\bin\Debug\net8.0\Microsoft.AspNetCore.Components.dll
+C:\GitHub\C# VS\BlackJack\BlackJackOnline\BlackJackOnline\bin\Debug\net8.0\Microsoft.AspNetCore.Metadata.dll

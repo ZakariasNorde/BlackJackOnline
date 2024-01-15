@@ -1,0 +1,14 @@
+﻿@using BlackJackOnline.Models
+
+@code
+{
+    [Parameter]
+    public List<Card> Cards { get; set; }
+}
+
+<div>
+    @foreach (var card in Cards)
+    {
+        <CardComp Card="card" />
+    }
+</div>

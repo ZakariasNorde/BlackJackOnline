@@ -1,0 +1,27 @@
+﻿@using BlackJackOnline.Models;
+
+@code {
+    [Parameter]
+    public Card card { get; set; }
+}
+
+@if (card.IsVisible)
+{
+    <img src="c:\github\c# vs\blackjack\blackjackonline\blackjackonline\wwwroot\images\pokercards\@(card.ImageName)" />
+}
+else
+{
+    <img class ="blackjack-card "src="c:\github\c# vs\blackjack\blackjackonline\blackjackonline\wwwroot\images\pokercards\cardbackfinal.png" />
+}
+<style> 
+    .blackjack-card {
+        height: 190px;
+        width: 140px;
+        float: left;
+    }
+
+        .blackjack-card:not(:first-child) {
+            margin-left: -100px;
+        }
+
+</style>

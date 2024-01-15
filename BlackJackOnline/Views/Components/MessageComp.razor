@@ -1,0 +1,22 @@
+﻿@using BlackJackOnline.Models;
+
+@code {
+    [Parameter]
+    public GameEnums.GameState State { get; set; }
+
+    [Parameter]
+    public decimal Bet { get; set; }
+}
+
+@if (State == GameEnums.GameState.Dealing)
+{
+    <span class="display-3 text-info">Dealing...</span>
+}
+@if (State == GameEnums.GameState.InProgress)
+{
+    <span class="display-3 text-primary">$@Bet</span>
+}
+@if (State == GameEnums.GameState.Shuffling)
+{
+    <span class="display-3 text-info">Shuffling...</span>
+}

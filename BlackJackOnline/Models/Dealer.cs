@@ -21,5 +21,13 @@
 		{
 			await player.AddCard(Deal());
 		}
+
+		public void Reveal()
+		{
+			foreach(Card card in Hand)
+			{
+				card.IsVisible = true;
+			}
+		}
 	}
 }

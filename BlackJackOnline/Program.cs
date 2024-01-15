@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<SiteContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("SiteContext")));
 builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<SiteContext>().AddDefaultTokenProviders();
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,5 +30,5 @@ app.UseAuthorization();
 app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Account}/{action=Register}/{id?}");
-
+app.MapBlazorHub();
 app.Run();
