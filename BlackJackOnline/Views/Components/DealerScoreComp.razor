@@ -1,0 +1,18 @@
+﻿@using BlackJackOnline.Models;
+
+@code {
+    [Parameter]
+    public GameEnums.GameState State { get; set; }
+
+    [Parameter]
+    public Dealer dealer { get; set; }
+}
+
+@if (State == GameEnums.GameState.InProgress
+   || State == GameEnums.GameState.Dealing
+   || State == GameEnums.GameState.Insurance
+   || State == GameEnums.GameState.Payout)
+{
+    <h1 class="display-3 text-info">@dealer.visibleScore</h1>
+}
+

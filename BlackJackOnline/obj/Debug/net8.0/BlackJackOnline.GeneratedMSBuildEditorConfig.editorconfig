@@ -22,6 +22,10 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcG9uZW50c1xDYXJkQ29tcC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/GitHub/C\# VS/BlackJack/BlackJackOnline/BlackJackOnline/Views/Components/DealerScoreComp.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcG9uZW50c1xEZWFsZXJTY29yZUNvbXAucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/GitHub/C\# VS/BlackJack/BlackJackOnline/BlackJackOnline/Views/Components/HandComp.razor]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcG9uZW50c1xIYW5kQ29tcC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
