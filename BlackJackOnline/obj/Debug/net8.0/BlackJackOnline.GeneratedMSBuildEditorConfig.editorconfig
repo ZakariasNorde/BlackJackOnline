@@ -18,6 +18,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\GitHub\C# VS\BlackJack\BlackJackOnline\BlackJackOnline
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/GitHub/C\# VS/BlackJack/BlackJackOnline/BlackJackOnline/wwwroot/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxfSW1wb3J0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/GitHub/C\# VS/BlackJack/BlackJackOnline/BlackJackOnline/Views/Components/CardComp.razor]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcG9uZW50c1xDYXJkQ29tcC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 

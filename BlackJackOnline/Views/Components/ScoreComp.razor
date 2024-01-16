@@ -5,7 +5,7 @@
     public GameEnums.GameState State { get; set; }
 
     [Parameter]
-    public Person player { get; set; }
+    public int score { get; set; }
 }
 
 @if (State == GameEnums.GameState.InProgress
@@ -13,5 +13,5 @@
     || State == GameEnums.GameState.Insurance
     || State == GameEnums.GameState.Payout)
 {
-    <h1 class="display-3 text-info">@player.visibleScore</h1>
+    <h1 class="display-3 text-info"> @score </h1>
 }

@@ -19,13 +19,21 @@
         </div>
     </div>
     <div class="col-3">
-        
-            @(await Html.RenderComponentAsync<HandComp>
-                (RenderMode.Server, new
+            <div>
+                @foreach (var card in Model.dealer.Hand)
                 {
-                Cards = Model.dealer.Hand
-                })
-                )
+
+                    @if (card.IsVisible)
+                    {
+                        <img class="blackjack-card " src=$"~/images/pokercards/{card.ImageName}" />
+                    }
+                    else
+                    {
+                        <img class="blackjack-card " src="~/images/pokercards/CardBackFinal.png" />
+                    }
+                    
+                }
+            </div>
     </div>
     <div class="col-3">
             @if (Model.dealer != null)
@@ -34,22 +42,24 @@
                     await Html.RenderComponentAsync<DealerScoreComp>(RenderMode.Server, new
                     {
                         State = Model.state,
-                        dealer = Model.dealer
+                         @* dealer = Model.dealer  *@
                     })
                                 )
+                
             }
     </div>
 </div>
 
 <div class="row">
     <div class="col-3">
-            @(
+            @* @(
                 await Html.RenderComponentAsync<MoneyComp>(RenderMode.Server, new
                 {
                     Funds = Model.player.Funds,
                     Change = Model.player.Change
                 })
-                )
+                ) *@
+                <component type="typeof(MoneyComp)" render-mode="ServerPrerendered" param-Funds="Model.player.Funds" param-Change="Model.player.Change"/>
     </div>
     <div class="col-3">
         @if (Model.state == GameEnums.GameState.Betting)
@@ -176,22 +186,23 @@
         }
     </div>
     <div class="col-3"´>
-            @(await Html.RenderComponentAsync<HandComp>
-                (RenderMode.Server, new
+             @foreach (var card in Model.player.Hand)
                 {
-                    Cards = Model.dealer.Hand
-                })
-                )
+
+                    @if (card.IsVisible)
+                    {
+                        <img class="blackjack-card" src=$"~/images/pokercards/{@card.ImageName}" />
+                        <h1> @card.ImageName </h1>
+                    }
+                    else
+                    {
+                    <img class="blackjack-card " src="~/images/pokercards/CardBackFinal.png" />
+                    }
+                }
+            
     </div>
     <div class="col-3">
-
-            @(await Html.RenderComponentAsync<HandComp>
-                (RenderMode.Server, new
-                {
-                    State = Model.state,
-                    Player = Model.player
-                })
-                )
+            <component type="typeof(ScoreComp)" render-mode="ServerPrerendered" param-State="Model.state" param-score="Model.player.visibleScore" />
     </div>
 </div>
 </form>
