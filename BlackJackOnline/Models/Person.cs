@@ -1,12 +1,13 @@
-﻿using static BlackJackOnline.Models.GameEnums;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using static BlackJackOnline.Models.GameEnums;
 
 namespace BlackJackOnline.Models
 {
 	public class Person
 	{
-		public List<Card> Hand {  get; set; } = new List<Card>();
-
-		public int visibleScore 
+        public virtual IEnumerable<Card> Hand { get; set; } = new List<Card>();
+        public int Id { get; set; }
+        public int visibleScore 
 		{
 			get
 			{
@@ -23,7 +24,7 @@ namespace BlackJackOnline.Models
 			}
 		}
 
-		public bool hasBlackJack => Hand.Count == 2 && visibleScore == 21;
+		public bool hasBlackJack => Hand.ToList().Count == 2 && visibleScore == 21;
 
 		public bool isBusted => visibleScore > 21; 
 		public int score()
@@ -92,13 +93,13 @@ namespace BlackJackOnline.Models
 
 		public async Task AddCard(Card card)
 		{
-			Hand.Add(card);
+			Hand.ToList().Add(card);
 			await Task.Delay(300);
 		}
 
 		public void ClearHand()
 		{
-			Hand.Clear();
+			Hand.ToList().Clear();
 		}
 	}
 }

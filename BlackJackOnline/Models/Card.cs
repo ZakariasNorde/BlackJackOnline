@@ -9,6 +9,8 @@ namespace BlackJackOnline.Models
 
 		public bool IsVisible { get; set; }
 
+		public int Id { get; set; }
+
 		public string ImageName { 
 			get{
 				return $"{Value.ToString()}_of_{Suit.ToString()}.png";

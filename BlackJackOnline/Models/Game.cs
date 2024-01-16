@@ -1,14 +1,22 @@
-﻿namespace BlackJackOnline.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BlackJackOnline.Models
 {
 	public class Game
 	{
-		public Player player {  get; set; }
+        public int playerId { get; set; }
+        [ForeignKey(nameof(playerId))]
+        public virtual Player player {  get; set; }
 
-		public Dealer dealer { get; set; }
+		public int dealerId { get; set; }
+		[ForeignKey(nameof(dealerId))]
+		public virtual Dealer dealer { get; set; }
 
-		public GameEnums.GameState state { get; set; }
 
-		public async Task Delay(int millis)
+        public GameEnums.GameState state { get; set; }
+
+        public int Id { get; set; }
+        public async Task Delay(int millis)
 		{
 			await Task.Delay(millis);
 		}

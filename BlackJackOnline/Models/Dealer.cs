@@ -1,10 +1,14 @@
-﻿namespace BlackJackOnline.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BlackJackOnline.Models
 {
 	public class Dealer : Person
 	{
-		public CardDeck Deck { get; set; } = new CardDeck();
+        public int deckId { get; set; }
+        [ForeignKey(nameof(deckId))]
+        public virtual CardDeck Deck { get; set; } = new CardDeck();
 
-		public bool HasAceShowing => Hand.Count == 2
+        public bool HasAceShowing => Hand.ToList().Count == 2
 								  && visibleScore == 11
 								  && Hand.Where(x => x.IsVisible == false).Count() == 1;
 		public Card Deal()

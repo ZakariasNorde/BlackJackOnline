@@ -1,9 +1,11 @@
 ﻿@model Game
 @using BlackJackOnline.Models;
+@using BlackJackOnline.Blazor.Components;
+
 <form method="post" asp-action="BlackJack">   
 <div class="row">
     <div class="col-3">
-        <div>
+       @*  <div>
             @{
                 int cardCount = Model.dealer.Deck.Count + 1;
             }
@@ -14,20 +16,37 @@
                 </div>
                 cardCount -= 13;
             }
-        </div>
+        </div> *@
     </div>
     <div class="col-3">
-        <HandComp Cards="Model.dealer.Hand" />
+            @(
+                await Html.RenderComponentAsync<HandComp>(RenderMode.Server, new
+                {
+                    Cards = Model.dealer.Hand
+                })
+                )
     </div>
     <div class="col-3">
-        <ScoreComp State="Model.state" Player="Model.dealer" />
+            @(
+                await Html.RenderComponentAsync<ScoreComp>(RenderMode.Server, new
+                {
+                    State = Model.state,
+                    @* Player = Model.dealer *@
+                })
+                )
     </div>
 </div>
 
 <div class="row">
     <div class="col-3">
-        <MoneyComp Funds="Model.player.Funds" Change="Model.player.Change" />
-    </div>
+            @(
+                    await Html.RenderComponentAsync<MoneyComp>(RenderMode.Server, new
+                    {
+                    Funds = Model.player.Funds,
+                    Change = Model.player.Change
+                    })
+                    )
+        </div>
     <div class="col-3">
         @if (Model.state == GameEnums.GameState.Betting)
         {
@@ -37,58 +56,48 @@
             }
             @if (Model.player.Funds >= 10)
             {
-         
-                <button class="btn btn-primary" id="betButton10">
+
+                    <button type="submit" name="act" value="bet10" class="btn btn-primary" id="betButton10">
                              Bet $10
                 </button>
 
-                <script>
-                    document.getElementById('betButton10').addEventListener('click', function() {
-                    // Call a JavaScript function or make an AJAX request here
-                    Model.Bet(10);
-                    });
-
-                </script>
             }
             @if (Model.player.Funds >= 20)
             {
-                <button class="btn btn-primary" id="betButton20">
+                    <button type="submit" name="act" value="bet20" class="btn btn-primary" id="betButton20">
                     Bet $20
                 </button>
 
-                <script>
-                    document.getElementById('betButton20').addEventListener('click', function () {
-                        // Call a JavaScript function or make an AJAX request here
-                        Model.Bet(20);
-                    });
-
-                </script>
             }
             @if (Model.player.Funds >= 50)
             {
-                <button class="btn btn-primary" id="betButton50">
+                <button type="submit" name="act" value="bet50" class="btn btn-primary" id="betButton50">
                     Bet $50
                 </button>
-
-                <script>
-                    document.getElementById('betButton50').addEventListener('click', function () {
-                        // Call a JavaScript function or make an AJAX request here
-                        Model.Bet(50);
-                    });
-
-                </script>
             }
         }
 
         @if (Model.state == GameEnums.GameState.Payout)
         {
-            <HandResultComp Player="Model.player" Dealer="Model.dealer" />
+                @(
+                    await Html.RenderComponentAsync<HandResultComp>(RenderMode.Server, new
+                    {
+                        Player = Model.player,
+                        Dealer = Model.dealer
+                    })
+                    )
         }
         @if (Model.state == GameEnums.GameState.Dealing
         || Model.state == GameEnums.GameState.Shuffling
         || Model.state == GameEnums.GameState.InProgress)
         {
-            <MessageComp State="Model.state" Bet="Model.player.Bet" />
+                @(
+                    await Html.RenderComponentAsync<MessageComp>(RenderMode.Server, new
+                    {
+                       State = Model.state,
+                       Bet = Model.player.Bet
+                    })
+                    )
         }
     </div>
 </div>
@@ -97,16 +106,10 @@
     <div class="col-3">
         @if (Model.state == GameEnums.GameState.NotStarted || Model.player.Funds < 10)
         {
-            <button type="submit" name="changed" value="Start" class="btn btn-secondary" id="btn-start">
+            <button type="submit" name="act" value="start" class="btn btn-secondary" id="btn-start">
             Start Game!
             </button>
-            <script>
-                document.getElementById('btn-start').addEventListener('click', function () {
-                    // Call a JavaScript function or make an AJAX request here
-                    Model.InitializeHand();
-                });
-
-            </script>
+           
         }
         @if (!Model.player.isBusted
         && Model.state == GameEnums.GameState.InProgress
@@ -134,7 +137,7 @@
             </script>
             @if (Model.player.visibleScore >= 9
            && Model.player.visibleScore <= 11
-           && Model.player.Hand.Count == 2
+           && Model.player.Hand.ToList().Count == 2
            && Model.player.Funds >= Model.player.Bet * 2)
             {
                 <br />
@@ -179,10 +182,21 @@
         }
     </div>
     <div class="col-3">
-        <HandComp Cards="Model.player.Hand" />
+            @(
+                await Html.RenderComponentAsync<HandComp>(RenderMode.Server, new
+                {
+                    Cards = Model.player.Hand
+                })
+                )
     </div>
     <div class="col-3">
-        <ScoreComp State="Model.state" Player="Model.player" />
+            @(  
+                await Html.RenderComponentAsync<ScoreComp>(RenderMode.Server, new
+                {
+                    State = Model.state,
+                    Player = Model.player
+                })
+                )
     </div>
 </div>
 </form>
