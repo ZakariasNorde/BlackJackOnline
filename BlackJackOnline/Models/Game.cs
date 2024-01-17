@@ -2,12 +2,21 @@
 {
 	public class Game
 	{
+
+		public Guid Id { get; set; }
 		public Player player {  get; set; }
 
 		public Dealer dealer { get; set; }
 
 		public GameEnums.GameState state { get; set; }
 
+		public Game(Guid id)
+		{
+			Id = id;
+			player = new Player();
+			dealer = new Dealer();
+			state = GameEnums.GameState.NotStarted;
+		}
 		public async Task Delay(int millis)
 		{
 			await Task.Delay(millis);
@@ -37,7 +46,7 @@
 		public async Task Deal()
 		{
 			state = GameEnums.GameState.Dealing;
-			await dealer.DealToPlayer(player);
+			await dealer.DealOpenToPlayer(player);
 
 			var dealerCard = dealer.Deal();
 			dealerCard.IsVisible = false;
@@ -66,7 +75,7 @@
 
 		public async Task Hit()
 		{
-			await dealer.DealToPlayer(player);
+			await dealer.DealOpenToPlayer(player);
 			if (player.isBusted)
 			{
 				EndHand();

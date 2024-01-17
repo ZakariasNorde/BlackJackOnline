@@ -11,7 +11,7 @@ namespace BlackJackOnline.Models
 
 		public string ImageName { 
 			get{
-				return $"{Value.ToString()}_of_{Suit.ToString()}.png";
+				return $"{Value.ToString()}_of_{Suit.ToString().ToLower()}.png";
 			}
 			set
 			{

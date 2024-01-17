@@ -8,8 +8,15 @@
 								  && visibleScore == 11
 								  && Hand.Where(x => x.IsVisible == false).Count() == 1;
 		public Card Deal()
-		{
+		{	
 			return Deck.Draw();
+        }
+
+		public Card DealOpen()
+		{
+			Card card = Deck.Draw();
+			card.IsVisible = true;
+			return card;
 		}
 
 		public async Task DealToSelf()
@@ -20,6 +27,13 @@
 		public async Task DealToPlayer(Player player)
 		{
 			await player.AddCard(Deal());
+		}
+
+		public async Task DealOpenToPlayer(Player player)
+		{
+			Card card = Deal();
+			card.IsVisible = true;
+			await player.AddCard(card);
 		}
 
 		public void Reveal()
