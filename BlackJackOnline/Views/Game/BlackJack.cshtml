@@ -190,9 +190,11 @@
                 {
 
                     @if (card.IsVisible)
-                    {
-                        <img class="blackjack-card" src=$"~/images/pokercards/{@card.ImageName}" />
-                        <h1> @card.ImageName </h1>
+                {
+                    string imageSrc = $"{@Url.Content("~/images/pokercards/")}{card.ImageName.ToLower()}";
+                        <img class="blackjack-card" src=@imageSrc />
+					
+       
                     }
                     else
                     {
