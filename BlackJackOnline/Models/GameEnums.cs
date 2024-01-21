@@ -34,6 +34,7 @@
             InProgress,
             Insurance,
             Payout,
+			DealerTurn,
             Shuffling
         }
     }

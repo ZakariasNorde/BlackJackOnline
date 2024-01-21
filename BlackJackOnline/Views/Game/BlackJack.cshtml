@@ -1,8 +1,14 @@
 ﻿@model Game
 @using BlackJackOnline.Models;
 @using BlackJackOnline.Views.Components;
-<form method="post" asp-action="BlackJack">   
-   
+<form method="post" asp-action="BlackJack" id="actForm">   
+        @if (Model.state == GameEnums.GameState.DealerTurn)
+        {
+        <script>
+            setTimeout(function () {autoSubmitForm();}, 1000);
+        </script>
+
+        }
 <div class="row">
     <div class="col-3">
         <div>
@@ -25,7 +31,8 @@
 
                     @if (card.IsVisible)
                     {
-                        <img class="blackjack-card " src=$"~/images/pokercards/{card.ImageName}" />
+                        string imageSrc = $"{@Url.Content("~/images/pokercards/")}{card.ImageName.ToLower()}";
+                        <img class="blackjack-card" src=@imageSrc />
                     }
                     else
                     {
@@ -38,13 +45,7 @@
     <div class="col-3">
             @if (Model.dealer != null)
             {
-                @(
-                    await Html.RenderComponentAsync<DealerScoreComp>(RenderMode.Server, new
-                    {
-                        State = Model.state,
-                         @* dealer = Model.dealer  *@
-                    })
-                                )
+                <component type="typeof(ScoreComp)" render-mode="ServerPrerendered" param-State="Model.state" param-score="Model.dealer.visibleScore" />
                 
             }
     </div>
@@ -52,13 +53,7 @@
 
 <div class="row">
     <div class="col-3">
-            @* @(
-                await Html.RenderComponentAsync<MoneyComp>(RenderMode.Server, new
-                {
-                    Funds = Model.player.Funds,
-                    Change = Model.player.Change
-                })
-                ) *@
+            
                 <component type="typeof(MoneyComp)" render-mode="ServerPrerendered" param-Funds="Model.player.Funds" param-Change="Model.player.Change"/>
     </div>
     <div class="col-3">
@@ -117,16 +112,10 @@
     <div class="col-3">
         @if (Model.state == GameEnums.GameState.NotStarted || Model.player.Funds < 10)
         {
-            <button type="submit" name="changed" value="Start" class="btn btn-secondary" id="btn-start">
+            <button type="submit" name="changed" value="start" class="btn btn-secondary" id="btn-start">
             Start Game!
             </button>
-            <script>
-                document.getElementById('btn-start').addEventListener('click', function () {
-                    // Call a JavaScript function or make an AJAX request here
-                    Model.InitializeHand();
-                });
-
-            </script>
+            
         }
         @if (!Model.player.isBusted
         && Model.state == GameEnums.GameState.InProgress
@@ -145,44 +134,25 @@
            && Model.player.Funds >= Model.player.Bet * 2)
             {
                 <br />
-                <button class="btn btn-warning" id="btn-Double">
+                <button type="submit" name="changed" value="double" class="btn btn-warning" id="btn-Double">
                     Double Down
                 </button>
-                <script>
-                    document.getElementById('btn-Double').addEventListener('click', function () {
-                        // Call a JavaScript function or make an AJAX request here
-                        Model.DoubleDown();
-                    });
-
-                </script>
+                
             }
             @if (Model.dealer.HasAceShowing && !Model.player.HasInsurance)
             {
                 <br />
-                <button class="btn btn-warning" id="btn-Insurance">
+                <button type="submit" name="changed" value="insurance" class="btn btn-warning" id="btn-Insurance">
                     Insurance ($@(Model.player.Bet / 2))
                 </button>
-                <script>
-                    document.getElementById('btn-Insurance').addEventListener('click', function () {
-                        // Call a JavaScript function or make an AJAX request here
-                        Model.Insurance();
-                    });
-
-                </script>
+               
             }
         }
         @if (Model.state == GameEnums.GameState.Payout)
         {
-            <button class="btn btn-secondary" id="btn-NewHand">
+            <button type="submit" name="changed" value="start" class="btn btn-secondary" id="btn-NewHand">
                 Keep Going!
             </button>
-            <script>
-                document.getElementById('btn-NewHand').addEventListener('click', function () {
-                    // Call a JavaScript function or make an AJAX request here
-                    Model.NewHand();
-                });
-
-            </script>
         }
     </div>
     <div class="col-3"´>
@@ -190,8 +160,8 @@
                 {
 
                     @if (card.IsVisible)
-                {
-                    string imageSrc = $"{@Url.Content("~/images/pokercards/")}{card.ImageName.ToLower()}";
+                    {
+                        string imageSrc = $"{@Url.Content("~/images/pokercards/")}{card.ImageName.ToLower()}";
                         <img class="blackjack-card" src=@imageSrc />
 					
        
@@ -206,5 +176,6 @@
     <div class="col-3">
             <component type="typeof(ScoreComp)" render-mode="ServerPrerendered" param-State="Model.state" param-score="Model.player.visibleScore" />
     </div>
-</div>
+    </div>
+    
 </form>

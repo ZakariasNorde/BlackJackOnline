@@ -24,6 +24,17 @@
 			await AddCard(Deal());
 		}
 
+		public async Task DealOpenToSelf()
+		{
+			await AddCard(DealOpen());
+		}
+
+		public void OpenFirst()
+		{
+			var notVisible = Hand.Where(c => c.IsVisible == false).ToList();
+			Card first = notVisible.FirstOrDefault();
+			first.IsVisible = true;
+		}
 		public async Task DealToPlayer(Player player)
 		{
 			await player.AddCard(Deal());
@@ -31,9 +42,7 @@
 
 		public async Task DealOpenToPlayer(Player player)
 		{
-			Card card = Deal();
-			card.IsVisible = true;
-			await player.AddCard(card);
+			await player.AddCard(DealOpen());
 		}
 
 		public void Reveal()

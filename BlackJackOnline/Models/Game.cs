@@ -1,23 +1,27 @@
-﻿namespace BlackJackOnline.Models
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+namespace BlackJackOnline.Models
 {
 	public class Game
 	{
 
 		public Guid Id { get; set; }
-		public Player player {  get; set; }
+		public Player player { get; set; }
 
 		public Dealer dealer { get; set; }
 
+		public UserManager<User> _userManager { get; set; }
 		public GameEnums.GameState state { get; set; }
 
-		public Game(Guid id)
-		{
-			Id = id;
-			player = new Player();
-			dealer = new Dealer();
-			state = GameEnums.GameState.NotStarted;
-		}
-		public async Task Delay(int millis)
+        public Game(Guid id, UserManager<User> userManager)
+        {
+            Id = id;
+            _userManager = userManager;
+            dealer = new Dealer();
+			player = new Player(500M);
+            state = GameEnums.GameState.NotStarted;
+        }
+        public async Task Delay(int millis)
 		{
 			await Task.Delay(millis);
 		}
@@ -48,14 +52,12 @@
 			state = GameEnums.GameState.Dealing;
 			await dealer.DealOpenToPlayer(player);
 
-			var dealerCard = dealer.Deal();
-			dealerCard.IsVisible = false;
-			await dealer.AddCard(dealerCard);
-		
-			await dealer.DealToPlayer(player);
-			
+			await dealer.DealOpenToSelf();
+
+			await dealer.DealOpenToPlayer(player);
+
 			await dealer.DealToSelf();
-			
+
 			state = GameEnums.GameState.InProgress;
 
 			if (player.hasBlackJack)
@@ -66,11 +68,22 @@
 
 		public async Task DealerTurn()
 		{
+			state = GameEnums.GameState.DealerTurn;
 			if (dealer.visibleScore < 17)
 			{
-				await dealer.DealToSelf();
-				await DealerTurn();
+				await dealer.DealOpenToSelf();
+				//await DealerTurn();
 			}
+			else
+			{
+				EndHand();
+			}
+
+		}
+
+		public async Task DealerRevealFirst()
+		{
+			dealer.OpenFirst();
 		}
 
 		public async Task Hit()
@@ -85,12 +98,25 @@
 		public async Task Stand()
 		{
 			player.Standing = true;
+			dealer.OpenFirst();
 			dealer.Reveal();
-
 			await DealerTurn();
-
 			EndHand();
 		}
+
+		public void NewStand()
+		{
+            player.Standing = true;
+            dealer.OpenFirst();
+            if (dealer.visibleScore < 17)
+            {
+                state = GameEnums.GameState.DealerTurn;
+            }
+            else
+            {
+                EndHand();
+            }
+        }
 
 		public async Task DoubleDown()
 		{
@@ -98,84 +124,92 @@
 
 			player.Bet *= 2;
 
-			await Delay(300);
+			await dealer.DealOpenToPlayer(player);
 
-			await player.AddCard(dealer.Deal());
-
-			await Stand();
+			NewStand();
 		}
 
 		public void Insurance()
 		{
-			state = GameEnums.GameState.Insurance;
-
-			if (dealer.HasAceShowing)
 			{
-				player.InsuranceBet = player.Bet / 2;
+				state = GameEnums.GameState.Insurance;
 
-				if (dealer.totalScore == 21)
-					dealer.Reveal();
+				if (dealer.HasAceShowing)
+				{
+					player.InsuranceBet = player.Bet / 2;
 
-				player.Change += player.InsuranceBet * 2;
+					if (dealer.totalScore == 21)
+						dealer.Reveal();
 
+					player.Change += player.InsuranceBet * 2;
+
+					state = GameEnums.GameState.Payout;
+
+					EndHand();
+				}
+				else
+				{
+					player.Change -= player.InsuranceBet;
+				}
+
+				state = GameEnums.GameState.InProgress;
+			}
+		}
+
+			public void EndHand()
+			{
 				state = GameEnums.GameState.Payout;
-				
-				EndHand();
+				if (player.hasBlackJack && dealer.visibleScore != 21)
+				{
+					//Player gets their bet back, plus 1.5 * the bet
+					player.Change += player.Bet * 1.5M;
+				}
+				else if (!player.isBusted && dealer.isBusted)
+				{
+					player.Change += player.Bet;
+				}
+				else if (!dealer.isBusted
+						 && !player.isBusted
+						 && player.visibleScore > dealer.visibleScore)
+				{
+
+					player.Change += player.Bet;
+				}
+				else if (!dealer.isBusted
+						 && !player.isBusted
+						 && player.visibleScore == dealer.visibleScore)
+				{
+					//push nothing happens
+				}
+				//in all other cases the player loses
+				else
+				{
+					player.Change += player.Bet * -1;
+				}
+				player.Bet = 0;
+				player.Standing = false;
 			}
-			else
+
+			public async Task NewHand()
 			{
-				player.Change -= player.InsuranceBet;
+				//Player gets paid
+				player.Collect();
+				player.ClearHand();
+				dealer.ClearHand();
+
+				state = GameEnums.GameState.NotStarted;
+
+				await InitializeHand();
 			}
 
-			state = GameEnums.GameState.InProgress;
-		}
-
-		public void EndHand()
+		public async Task CreatePlayer(string userName)
 		{
-			state = GameEnums.GameState.Payout;
-			if (player.hasBlackJack && dealer.visibleScore != 21)
-			{
-				//Player gets their bet back, plus 1.5 * the bet
-				player.Change += player.Bet * 1.5M;
-			}
-			else if (!player.isBusted && dealer.isBusted)
-			{
-				player.Change += player.Bet;
-			}
-			else if (!dealer.isBusted
-					 && !player.isBusted
-					 && player.visibleScore > dealer.visibleScore)
-			{
+            User user = await _userManager.FindByNameAsync(userName);
+			decimal funds = user.Funds;
+			player = new Player(funds);
+        }
 
-				player.Change += player.Bet;
-			}
-			else if (!dealer.isBusted
-					 && !player.isBusted
-					 && player.visibleScore == dealer.visibleScore)
-			{
-				//push nothing happens
-			}
-			//in all other cases the player loses
-			else
-			{
-				player.Change += player.Bet * -1;
-			}
-
-			player.Bet = 0;
-			player.Standing = false;
-		}
-
-		public async Task NewHand()
-		{
-			//Player gets paid
-			player.Collect();
-
-			player.ClearHand();
-			dealer.ClearHand();
-
-			state = GameEnums.GameState.NotStarted;
-
-			await InitializeHand();
+		
 		}
 	}
-}
+

@@ -33,7 +33,7 @@ namespace BlackJackOnline.Controllers
 			{
 				if (ModelState.IsValid)
 				{   //creates an empty user object where and assigns the from the registerviewmodel
-					User user = new User();
+					User user = new User(500M);
 					user.UserName = registerViewModel.UserName;
 					//creates the user with the usermanager and if succeded the new user gets signed in 
 					//and a message is displayed
@@ -42,7 +42,7 @@ namespace BlackJackOnline.Controllers
 					{
 						await signInManager.SignInAsync(user, isPersistent: true);
 						TempData["AlertMessage"] = "User was registered succesfully";
-						return RedirectToAction("CreateProfile", "Profile");
+						return RedirectToAction("BlackJack", "Game");
 					}
 					else
 					{
@@ -86,7 +86,7 @@ namespace BlackJackOnline.Controllers
 					lockoutOnFailure: false);
 					if (result.Succeeded)
 					{
-						return RedirectToAction("Search", "Resume");
+						return RedirectToAction("BlackJack", "Game");
 					}
 					else
 					{
@@ -109,7 +109,7 @@ namespace BlackJackOnline.Controllers
 		public async Task<IActionResult> Logout()
 		{
 			await signInManager.SignOutAsync();
-			return RedirectToAction("Search", "Resume");
+			return RedirectToAction("Register", "Account");
 		}
 
 		//[Authorize]
