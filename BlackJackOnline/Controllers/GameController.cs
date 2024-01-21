@@ -135,8 +135,9 @@ namespace BlackJackOnline.Controllers
             Game game = GetGameFromSession();
             user.Funds += game.player.Change;
             decimal fundTest = user.Funds;
-            _userManager.UpdateAsync(user);
+            await _userManager.UpdateAsync(user);
             _siteContext.Update(user);
+            _siteContext.SaveChanges();
 
         }
     }
