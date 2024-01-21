@@ -1,4 +1,10 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿function autoSubmitForm() {
+    var form = document.getElementById('actForm');
+    var input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'changed';
+    input.value = 'dealerTurn';
+    form.appendChild(input);
 
-// Write your JavaScript code.
+    form.submit();
+}

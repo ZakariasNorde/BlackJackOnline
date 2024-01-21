@@ -48,11 +48,12 @@ namespace BlackJackOnline.Models
 				{
 					for (int i = 0; i < aceCount; i++)
 					{
-						if(score - (i * 10) <= 21)
+						if(score - ((i + 1) * 10) <= 21)
 						{
-							return score - (i * 10);
+							return score - ((i + 1) * 10);
 						}
 					}
+					return score - (aceCount * 10);
 				}
 				return score;
 			}
@@ -79,9 +80,9 @@ namespace BlackJackOnline.Models
 				{
 					for (int i = 0; i < aceCount; i++)
 					{
-						if (unseenTotal - (i * 10) <= 21)
+						if (unseenTotal - ((i + 1) * 10) <= 21)
 						{
-							return unseenTotal - (i * 10);
+							return unseenTotal - ((i + 1) * 10);
 						}
 					}
 				}

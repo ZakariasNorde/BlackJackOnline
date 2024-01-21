@@ -1,6 +1,7 @@
 ﻿using BlackJackOnline.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 
 namespace BlackJackOnline.Controllers
 {
@@ -8,16 +9,38 @@ namespace BlackJackOnline.Controllers
 
     {
         public static List<Game> games = new List<Game>();
-       
-        public IActionResult BlackJack()
+        public UserManager<User> _userManager {  get; set; }
+
+        public SiteContext _siteContext { get; set; }
+        public GameController(UserManager<User> userManager, SiteContext siteContext)
+        {
+            _userManager = userManager;
+            _siteContext = siteContext;
+        }
+        public async Task<IActionResult> BlackJack()
         {
             try
             {
                 Guid gameId = Guid.NewGuid(); // a unique id that is assigned to each game and to the user's session variable
-                games.Add(new Game(gameId));
+                string userName = User.Identity.Name;
+                if (userName != null)
+                {
+                    Game newGame = new Game(gameId, _userManager);
+                    await newGame.CreatePlayer(userName);
+                    games.Add(newGame);
+              
+                }
+                else
+                {
+                    games.Add(new Game(gameId, _userManager));
+                }
+                
+                    
+                
                 HttpContext.Session.SetString("gameId", gameId.ToString());
                 Game game = GetGameFromSession();
-                string test = game.player.Test;
+                //varför är denna variabeln 0 även fast players funds blir 500 i båda konstruktorerna
+                decimal funds = game.player.Funds;
                 return View(game);
             }
             catch (Exception ex)
@@ -31,11 +54,17 @@ namespace BlackJackOnline.Controllers
         public async Task<IActionResult> BlackJack(string changed)
         {
             Game game = GetGameFromSession();
-            string test = game.player.Test;
             switch (changed)
             {
-                case "Start":
+                case "start":
                     {
+                        //Ifall user inte trycker på keep going kommer de fortfarande få vinsten till sitt konto
+                        //fixa på nåt sätt så att usercollect körs automatiskt
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            await UserCollect();
+                        }
+                        await game.NewHand();
                         await game.InitializeHand();
                         break;
                     }
@@ -54,15 +83,31 @@ namespace BlackJackOnline.Controllers
                         await game.Bet(50);
                         break;
                     }
+                
                 case "stand":
                     {
-                        await game.Stand();
+                        game.NewStand();
+                        break;
+                        
+                    }
+                case "dealerTurn":
+                    {
+                        await game.DealerTurn();
                         break;
                     }
                 case "hit":
                     {
                         await game.Hit();
-                        int score = game.player.visibleScore;
+                        break;
+                    }
+                case "insurance":
+                    {
+                        game.Insurance();
+                        break;
+                    }
+                case "double":
+                    {
+                        await game.DoubleDown();
                         break;
                     }
             }
@@ -82,6 +127,18 @@ namespace BlackJackOnline.Controllers
             {
                 return null;
             }
+        }
+
+        private async Task UserCollect()
+        {
+            User user = await _userManager.FindByNameAsync(User.Identity.Name);
+            Game game = GetGameFromSession();
+            user.Funds += game.player.Change;
+            decimal fundTest = user.Funds;
+            await _userManager.UpdateAsync(user);
+            _siteContext.Update(user);
+            _siteContext.SaveChanges();
+
         }
     }
 

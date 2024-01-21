@@ -20,7 +20,7 @@ namespace BlackJackOnline.Models
 		}
 		public int score()
 		{
-			if(Value == CardValue.Jack && Value == CardValue.Queen && Value == CardValue.King)
+			if(Value == CardValue.Jack || Value == CardValue.Queen || Value == CardValue.King)
 			{
 				return 10;
 			}
