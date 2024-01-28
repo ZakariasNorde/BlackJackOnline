@@ -60,6 +60,7 @@ namespace BlackJackOnline.Controllers
                     {
                         //Ifall user inte trycker på keep going kommer de fortfarande få vinsten till sitt konto
                         //fixa på nåt sätt så att usercollect körs automatiskt
+                        //kan även lägga till en annan knapp än keep going också som också kör Usercollect
                         if (User.Identity.IsAuthenticated)
                         {
                             await UserCollect();
@@ -83,7 +84,26 @@ namespace BlackJackOnline.Controllers
                         await game.Bet(50);
                         break;
                     }
-                
+                case "dealingSecond":
+                    {
+                        await game.DealSecond();
+                        break;
+                    }
+                case "dealingThird":
+                    {
+                        await game.DealThird();
+                        break;
+                    }
+                case "dealingFourth":
+                    {
+                        await game.DealFourth();
+                        break;
+                    }
+                case "dealingLast":
+                    {
+                        game.EndDealing();
+                        break;
+                    }
                 case "stand":
                     {
                         game.NewStand();
