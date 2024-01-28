@@ -1,14 +1,45 @@
 ﻿@model Game
 @using BlackJackOnline.Models;
 @using BlackJackOnline.Views.Components;
+<head>
+    <link rel="stylesheet" href="~/css/blackjack.css" asp-append-version="true" />
+</head>
 <form method="post" asp-action="BlackJack" id="actForm">   
         @if (Model.state == GameEnums.GameState.DealerTurn)
         {
         <script>
-            setTimeout(function () {autoSubmitForm();}, 1000);
+            setTimeout(function () {autoSubmitForm('dealerTurn');}, 1000);
         </script>
 
         }
+        @if (Model.state == GameEnums.GameState.DealingSecond)
+        {
+        <script>
+            setTimeout(function () {autoSubmitForm('dealingSecond');}, 1000);
+        </script>
+
+        }
+        @if (Model.state == GameEnums.GameState.DealingThird)
+        {
+        <script>
+            setTimeout(function () {autoSubmitForm('dealingThird');}, 1000);
+        </script>
+        }
+        @if (Model.state == GameEnums.GameState.DealingFourth)
+        {
+            <script>
+                setTimeout(function () { autoSubmitForm('dealingFourth'); }, 1000);
+            </script>
+
+        }
+        @if (Model.state == GameEnums.GameState.DealingLast)
+        {
+            <script>
+                setTimeout(function () { autoSubmitForm('dealingLast'); }, 1000);
+            </script>
+
+        }
+        
 <div class="row">
     <div class="col-3">
         <div>
@@ -89,13 +120,37 @@
 
         @if (Model.state == GameEnums.GameState.Payout)
         {
-            <HandResultComp Player="Model.player" Dealer="Model.dealer" />
+                @if (Model.player.hasBlackJack
+               && (Model.player.visibleScore > Model.dealer.visibleScore || Model.dealer.isBusted))
+                {
+                    <h1 class="h1Positive">Blackjack!</h1>
+                }
+                else if (Model.player.isBusted)
+                {
+                    <h1 class="h1Negative">Busted</h1>
+                }
+                else if (Model.dealer.isBusted || Model.player.visibleScore > Model.dealer.visibleScore)
+                {
+                    <h1 class="h1Positive">You Win!</h1>
+                }
+                else if (Model.dealer.visibleScore > Model.player.visibleScore)
+                {
+                    <h1 class="h1Negative"> Dealer Wins</h1>
+                }
+                else if (Model.player.visibleScore == Model.dealer.visibleScore)
+                {
+                    <h1 class="h1Neutral">Push</h1>
+                }
         }
         @if (Model.state == GameEnums.GameState.Dealing
         || Model.state == GameEnums.GameState.Shuffling
-        || Model.state == GameEnums.GameState.InProgress)
+        || Model.state == GameEnums.GameState.InProgress
+        || Model.state == GameEnums.GameState.DealingSecond
+        || Model.state == GameEnums.GameState.DealingThird
+        || Model.state == GameEnums.GameState.DealingFourth
+        || Model.state == GameEnums.GameState.DealingLast)
         {
-            <MessageComp State="Model.state" Bet="Model.player.Bet" />
+            
                 @(
                     await Html.RenderComponentAsync<MessageComp>(RenderMode.Server, new
                     {

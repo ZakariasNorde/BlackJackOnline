@@ -43,7 +43,7 @@ namespace BlackJackOnline.Models
 			if (player.Funds >= amount)
 			{
 				player.Bet += amount;
-				await Deal();
+				await DealFirst();
 			}
 		}
 
@@ -66,6 +66,39 @@ namespace BlackJackOnline.Models
 			}
 		}
 
+		public async Task DealFirst()
+		{
+			await dealer.DealOpenToPlayer(player);
+			state = GameEnums.GameState.DealingSecond;
+		}
+
+		public async Task DealSecond()
+		{
+			await dealer.DealToSelf();
+			state = GameEnums.GameState.DealingThird;
+		}
+
+		public async Task DealThird()
+		{
+			await dealer.DealOpenToPlayer(player);
+			state = GameEnums.GameState.DealingFourth;
+		}
+
+		public async Task DealFourth()
+		{
+			await dealer.DealOpenToSelf();
+			state = GameEnums.GameState.DealingLast;
+		}
+
+		public void EndDealing()
+		{
+            state = GameEnums.GameState.InProgress;
+
+            if (player.hasBlackJack)
+            {
+                EndHand();
+            }
+        }
 		public async Task DealerTurn()
 		{
 			state = GameEnums.GameState.DealerTurn;

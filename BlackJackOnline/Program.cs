@@ -33,6 +33,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
 	name: "default",
-	pattern: "{controller=Account}/{action=Register}/{id?}");
+	pattern: "{controller=Home}/{action=Start}/{id?}");
 app.MapBlazorHub();
 app.Run();

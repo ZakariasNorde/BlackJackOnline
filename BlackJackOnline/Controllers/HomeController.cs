@@ -13,7 +13,7 @@ namespace BlackJackOnline.Controllers
 			_logger = logger;
 		}
 
-		public IActionResult Index()
+		public IActionResult Start()
 		{
 			return View();
 		}

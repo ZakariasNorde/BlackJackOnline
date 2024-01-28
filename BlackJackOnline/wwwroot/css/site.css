@@ -18,7 +18,11 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-image: url('../images/designimages/casinobackground1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .blackjack-card {
@@ -27,6 +31,26 @@ body {
     float: left;
 }
 
-    .blackjack-card:not(:first-child) {
+.blackjack-card:not(:first-child) {
         margin-left: -100px;
-    }
+}
+
+.white {
+    color: white;
+}
+
+.whiteH2{
+    color: white;
+}
+
+.h1Positive{
+    color: green;
+}
+
+h1Neutral{
+    color: black;
+}
+
+h1Negative{
+    color: red;
+}
