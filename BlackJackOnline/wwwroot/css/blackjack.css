@@ -1,10 +1,29 @@
 ﻿body {
-    background-image: url('../images/designimages/fireflyblue.jpg');
+    background-image: url('../images/designimages/slightly-dark-green-shaded.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
-h1{
+.h1Negative{
+    color: red;
+    font-weight: bold;
+}
+
+.h1Positive{
+    color: lime;
+    font-weight: bold;
+}
+
+.h1Neutral {
+    color: dodgerblue;
+    font-weight: bold;
+}
+
+.textNeutral{
     color: black;
+}
+
+.changeComp{
+    margin-right: 35px;
 }

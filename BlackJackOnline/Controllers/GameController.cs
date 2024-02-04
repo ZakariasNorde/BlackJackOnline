@@ -130,6 +130,15 @@ namespace BlackJackOnline.Controllers
                         await game.DoubleDown();
                         break;
                     }
+                case "quit":
+                    {
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            await UserCollect();
+                        }
+                        return RedirectToAction("Index", "Home");
+                        break;
+                    }
             }
             return View(game);
         }

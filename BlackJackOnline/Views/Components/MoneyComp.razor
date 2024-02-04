@@ -8,25 +8,27 @@
 }
 
 @{
-    string cssClass = "text-success";
+    string cssClass = "h1Positive";
 
     if (Funds < 100 && Funds >= 50)
-        cssClass = "text-warning";
+        cssClass = "h1Neutral";
     if (Funds < 50)
-        cssClass = "text-danger";
+        cssClass = "h1Negative";
 
     string changeDisplay = "+$" + Change;
-    string changeCss = "text-success";
+    string changeCss = "h1Positive";
 
     if (Change < 0M)
     {
         changeDisplay = "-$" + (Change * -1);
-        changeCss = "text-danger";
+        changeCss = "h1Negative";
     }
 }
 
 <span class="display-3 @cssClass">$@Funds</span>
 @if (Change != 0)
 {
+    <div class="changeComp">
     <span class="display-3 @changeCss">@changeDisplay</span>
+    </div>
 }

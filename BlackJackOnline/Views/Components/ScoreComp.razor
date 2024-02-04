@@ -10,8 +10,12 @@
 
 @if (State == GameEnums.GameState.InProgress
     || State == GameEnums.GameState.Dealing
+    || State == GameEnums.GameState.DealingSecond
+    || State == GameEnums.GameState.DealingThird
+    || State == GameEnums.GameState.DealingFourth
+    || State == GameEnums.GameState.DealingLast
     || State == GameEnums.GameState.Insurance
     || State == GameEnums.GameState.Payout)
 {
-    <h1 class="display-3 text-info"> @score </h1>
+    <h1 class="h1Neutral"> @score </h1>
 }

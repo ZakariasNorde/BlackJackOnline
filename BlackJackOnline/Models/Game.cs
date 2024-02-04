@@ -126,16 +126,20 @@ namespace BlackJackOnline.Models
 			{
 				EndHand();
 			}
+			if(player.visibleScore == 21)
+			{
+				NewStand();
+			}
 		}
 
-		public async Task Stand()
-		{
-			player.Standing = true;
-			dealer.OpenFirst();
-			dealer.Reveal();
-			await DealerTurn();
-			EndHand();
-		}
+		//public async Task Stand()
+		//{
+		//	player.Standing = true;
+		//	dealer.OpenFirst();
+		//	dealer.Reveal();
+		//	await DealerTurn();
+		//	EndHand();
+		//}
 
 		public void NewStand()
 		{
