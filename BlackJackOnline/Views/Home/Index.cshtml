@@ -1,10 +1,30 @@
-﻿
-@{
-    ViewData["Title"] = "Home Page";
-    
-}
+﻿<head>
+	<link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+</head>
+<body>
+<h1 class="goldenTitle"> Welcome to BlackJackOnline! </h1>
+<div class="startButtons">
+	@if (!User.Identity.IsAuthenticated)
+		{
+		<form method="get" asp-controller="Game" asp-action="BlackJack">
+			<button class="startBtn"> Play as Guest </button>
+		</form>
+		<form method="get" asp-controller="Account" asp-action="Register">
+			<button class="startBtn"> Create an Account </button>
+		</form>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+		<form method="get" asp-controller="Account" asp-action="Login">
+				<button class="startBtn"> Login </button>
+		</form>
+		}
+	else
+	{
+		<form method="get" asp-controller="Game" asp-action="BlackJack">
+			<button class="startBtn"> Play </button>
+		</form>
+	}
+		<form method="get" asp-controller="FIXA" asp-action="FIXA">
+	<button class="startBtn"> Leaderboard </button>
+	</form>
 </div>
+</body>

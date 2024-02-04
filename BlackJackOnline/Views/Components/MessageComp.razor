@@ -8,15 +8,19 @@
     public decimal Bet { get; set; }
 }
 
-@if (State == GameEnums.GameState.Dealing)
+@if (State == GameEnums.GameState.Dealing
+   || State == GameEnums.GameState.DealingSecond
+   || State == GameEnums.GameState.DealingThird
+   || State == GameEnums.GameState.DealingFourth
+   || State == GameEnums.GameState.DealingLast)
 {
-    <span class="display-3 text-info">Dealing...</span>
+    <h1 class="h1Neutral">Dealing...</h1>
 }
 @if (State == GameEnums.GameState.InProgress)
 {
-    <span class="display-3 text-primary">$@Bet</span>
+    <h1 class="h1Neutral">$@Bet</h1>
 }
 @if (State == GameEnums.GameState.Shuffling)
 {
-    <span class="display-3 text-info">Shuffling...</span>
+    <h1 class="h1Neutral">Shuffling...</h1>
 }

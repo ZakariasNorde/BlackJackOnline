@@ -109,7 +109,7 @@ namespace BlackJackOnline.Controllers
 		public async Task<IActionResult> Logout()
 		{
 			await signInManager.SignOutAsync();
-			return RedirectToAction("Register", "Account");
+			return RedirectToAction("Index", "Home");
 		}
 
 		//[Authorize]
