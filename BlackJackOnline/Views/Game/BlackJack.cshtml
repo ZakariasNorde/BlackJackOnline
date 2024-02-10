@@ -203,7 +203,15 @@
                 </button>
                
             }
-        }
+
+            @if (Model.player.canSplit)
+                {
+                    <br />
+                    <button type="submit" name="changed" value="split" class="btn btn-warning" id="btn-Insurance">
+                        Split
+                    </button>
+                }
+            }
         @if (Model.state == GameEnums.GameState.Payout)
         {
             <button type="submit" name="changed" value="start" class="btn btn-secondary" id="btn-NewHand">

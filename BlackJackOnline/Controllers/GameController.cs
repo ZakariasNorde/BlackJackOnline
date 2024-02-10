@@ -139,6 +139,11 @@ namespace BlackJackOnline.Controllers
                         return RedirectToAction("Index", "Home");
                         break;
                     }
+                case "split":
+                    {
+                        //fixa split kod här
+                        break;
+                    }
             }
             return View(game);
         }
