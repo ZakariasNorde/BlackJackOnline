@@ -1,0 +1,24 @@
+﻿
+.table {
+    width: 60%;
+    margin: 0 auto;
+    border-spacing: 1;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+table thead {
+    background-color: black;
+    border: solid black 1px;
+    color: white;
+    border-radius: 10px;
+}
+
+table tbody {
+    background-color: red;
+    border: solid black 1px;
+    color: white;
+    border-radius: 10px;
+}

@@ -209,9 +209,11 @@
             <button type="submit" name="changed" value="start" class="btn btn-secondary" id="btn-NewHand">
                 Keep Going!
             </button>
+            @if (User.Identity.IsAuthenticated){
                 <button type="submit" name="changed" value="quit" class="btn btn-secondary" id="btn-NewHand">
                     Save and quit
                 </button>
+            }
         }
     </div>
     <div class="col-3"´>

@@ -1,0 +1,29 @@
+﻿@model List<User>
+<head>
+	<link rel="stylesheet" href="~/css/leaderboard.css" asp-append-version="true" />
+</head>
+<table class="table">
+	<thead>
+	<tr> 
+		<th> Placement </th>
+		<th> Name </th>
+		<th> Bank </th>
+	</tr>
+	</thead>
+	<tbody>
+		@for (int i = 0; i < Model.Count; i++)
+		{
+		<tr>
+			@{var user = Model[i];}
+			<td> @(i + 1) </td>
+			<td> @user.UserName </td>
+			<td> @user.Funds $</td>
+			@* <td>
+			<form asp-controller="Profile" asp-action="ProfileView" asp-route-id="@user.UserName">
+						<button type="submit" class="btn btn-primary">View Profile</button>
+			</form>
+			</td> *@
+		</tr>
+		}
+	</tbody>
+</table>

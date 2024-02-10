@@ -196,7 +196,7 @@ namespace BlackJackOnline.Models
 			public void EndHand()
 			{
 				state = GameEnums.GameState.Payout;
-				if (player.hasBlackJack && dealer.visibleScore != 21)
+				if (player.hasBlackJack && !dealer.hasBlackJack)
 				{
 					//Player gets their bet back, plus 1.5 * the bet
 					player.Change += player.Bet * 1.5M;
