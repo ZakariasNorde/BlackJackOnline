@@ -41,7 +41,7 @@
         }
         
 <div class="row">
-    <div class="col-3">
+    <div class="col">
         <div>
             @* @{
                 int cardCount = Model.dealer.Deck.Count + 1;
@@ -55,8 +55,13 @@
             } *@
         </div>
     </div>
-    <div class="col-3">
+    <div class="col">
             <div>
+                @if (Model.dealer != null)
+                {
+                    <component type="typeof(ScoreComp)" render-mode="ServerPrerendered" param-State="Model.state" param-score="Model.dealer.visibleScore" />
+
+                }
                 @foreach (var card in Model.dealer.Hand)
                 {
 
@@ -73,22 +78,22 @@
                 }
             </div>
     </div>
-    <div class="col-3">
+    @* <div class="col-3">
             @if (Model.dealer != null)
             {
                 <component type="typeof(ScoreComp)" render-mode="ServerPrerendered" param-State="Model.state" param-score="Model.dealer.visibleScore" />
                 
             }
-    </div>
+    </div> *@
 </div>
 
 <div class="row">
-    <div class="col-3">
+    <div class="col">
             <div class="moneyComp"> 
                 <component type="typeof(MoneyComp)" render-mode="ServerPrerendered" param-Funds="Model.player.Funds" param-Change="Model.player.Change"/>
             </div>
     </div>
-    <div class="col-3">
+    <div class="col">
         @if (Model.state == GameEnums.GameState.Betting)
         {
             @if (Model.player.Funds < 10)
@@ -156,7 +161,7 @@
                     await Html.RenderComponentAsync<MessageComp>(RenderMode.Server, new
                     {
                         State = Model.state,
-                        Bet = Model.player.Bet
+                        Bet = Model.TotalBet 
                     })
                     )
 
@@ -165,7 +170,7 @@
 </div>
 
 <div class="row">
-    <div class="col-3">
+    <div class="col">
         @if (Model.state == GameEnums.GameState.NotStarted || Model.player.Funds < 10)
         {
             <button type="submit" name="changed" value="start" class="btn btn-secondary" id="btn-start">
@@ -177,12 +182,6 @@
         && Model.state == GameEnums.GameState.InProgress
         && !Model.player.Standing)
         {
-                <button type="submit" name="changed" value="stand" class="btn btn-primary" id="btn-Stand">
-                Stand
-            </button>
-                <button type="submit" name="changed" value="hit" class="btn btn-primary" id="btn-Hit">
-                Hit
-            </button>
             
             @if (Model.player.visibleScore >= 9
            && Model.player.visibleScore <= 11
@@ -204,7 +203,7 @@
                
             }
 
-            @if (Model.player.canSplit)
+                @if (Model.player.canSplit && Model.player.Funds >= Model.player.Bet * 2)
                 {
                     <br />
                     <button type="submit" name="changed" value="split" class="btn btn-warning" id="btn-Insurance">
@@ -224,8 +223,14 @@
             }
         }
     </div>
-    <div class="col-3"´>
-             @foreach (var card in Model.player.Hand)
+    @for(int handIndex = 0; handIndex < Model.hands.Count; handIndex++)
+            {
+            var hand = Model.hands[handIndex];
+            <div class="col">
+            
+             <component type="typeof(ScoreComp)" render-mode="ServerPrerendered" param-State="Model.state" param-score="hand.visibleScore" />
+   
+            @foreach (var card in hand.Hand)
                 {
 
                     @if (card.IsVisible)
@@ -240,11 +245,31 @@
                     <img class="blackjack-card " src="~/images/pokercards/CardBackFinal.png" />
                     }
                 }
+
+                @if (!hand.isBusted
+             && Model.state == GameEnums.GameState.InProgress
+             && !hand.Standing)
+                {
+
+                    var standString = "stand" + " " + handIndex;
+                    var hitString = "hit" + " " + handIndex;
+
+                    <button type="submit" name="changed" value="@(standString)" class="btn btn-primary" id="btn-Stand">
+                        Stand
+                    </button>
+                    <button type="submit" name="changed" value="@(hitString)" class="btn btn-primary" id="btn-Hit">
+                        Hit
+                    </button>
+                   
+
+                }
+                
             
     </div>
-    <div class="col-3">
+    }
+    @* <div class="col-3">
             <component type="typeof(ScoreComp)" render-mode="ServerPrerendered" param-State="Model.state" param-score="Model.player.visibleScore" />
-    </div>
+    </div> *@
     </div>
     
 </form>

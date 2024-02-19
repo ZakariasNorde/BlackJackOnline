@@ -35,12 +35,12 @@
 			Card first = notVisible.FirstOrDefault();
 			first.IsVisible = true;
 		}
-		public async Task DealToPlayer(Player player)
+		public async Task DealToPlayer(Person player)
 		{
 			await player.AddCard(Deal());
 		}
 
-		public async Task DealOpenToPlayer(Player player)
+		public async Task DealOpenToPlayer(Person player)
 		{
 			await player.AddCard(DealOpen());
 		}

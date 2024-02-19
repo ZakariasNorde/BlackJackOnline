@@ -6,7 +6,10 @@ namespace BlackJackOnline.Models
 	{
 		public List<Card> Hand {  get; set; } = new List<Card>();
 
-		public int visibleScore 
+        public decimal Bet { get; set; }
+
+        public bool Standing { get; set; }
+        public int visibleScore 
 		{
 			get
 			{
