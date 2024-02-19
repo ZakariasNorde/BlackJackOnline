@@ -163,22 +163,31 @@ namespace BlackJackOnline.Models
 		{
             await dealer.DealOpenToPlayer(hand);
 
-			if (index == 0)
+			if (index < (hands.Count - 1))
 			{
 
 				if (hand.isBusted)
 				{
-					EndHand();
+					
 				}
 				if (hand.visibleScore == 21)
 				{
 					NewStand(hand);
 				}
 			}
+
 			else
 			{
-				await Hit(hands[(index - 1)], (index - 1));
-			}
+                if (hand.isBusted)
+                {
+                    EndHand();
+                }
+                if (hand.visibleScore == 21)
+                {
+                    NewStand(hand);
+                }
+            }
+			
         }
 
 		//public async Task Stand()
@@ -231,7 +240,7 @@ namespace BlackJackOnline.Models
 
 					state = GameEnums.GameState.Payout;
 
-					EndHand();
+					NewEndHand();
 				}
 				else
 				{
@@ -242,6 +251,10 @@ namespace BlackJackOnline.Models
 			}
 		}
 
+		public void NewEndHand()
+		{
+
+		}
 			public void EndHand()
 			{
 				state = GameEnums.GameState.Payout;
