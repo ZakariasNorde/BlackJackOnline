@@ -6,7 +6,11 @@ namespace BlackJackOnline.Models
 	{
 		public List<Card> Hand {  get; set; } = new List<Card>();
 
-		public int visibleScore 
+        public decimal Bet { get; set; }
+
+		public bool ActiveHand {  get; set; }
+        public bool Standing { get; set; }
+        public int visibleScore 
 		{
 			get
 			{
@@ -24,6 +28,8 @@ namespace BlackJackOnline.Models
 		}
 
 		public bool hasBlackJack => Hand.Count == 2 && visibleScore == 21;
+
+		public bool canSplit => Hand.Count == 2 && Hand[0].score() == Hand[1].score();
 
 		public bool isBusted => visibleScore > 21; 
 		public int score()

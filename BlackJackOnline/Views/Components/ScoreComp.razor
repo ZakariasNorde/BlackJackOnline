@@ -6,6 +6,29 @@
 
     [Parameter]
     public int score { get; set; }
+
+    public string cssClass
+    {
+        get
+        {
+            if(score < 21)
+            {
+                return "h1Neutral";
+            }
+            else if(score == 21)
+            {
+                return "h1Positive";
+            }
+            else
+            {
+                return "h1Negative";
+            }
+        }
+        set
+        {
+            cssClass = value;
+        }
+    }
 }
 
 @if (State == GameEnums.GameState.InProgress
@@ -17,5 +40,5 @@
     || State == GameEnums.GameState.Insurance
     || State == GameEnums.GameState.Payout)
 {
-    <h1 class="h1Neutral"> @score </h1>
+    <h1 class=@cssClass> @score </h1>
 }

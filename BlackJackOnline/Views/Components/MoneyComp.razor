@@ -25,10 +25,13 @@
     }
 }
 
-<span class="display-3 @cssClass">$@Funds</span>
 @if (Change != 0)
 {
     <div class="changeComp">
-    <span class="display-3 @changeCss">@changeDisplay</span>
+    <span class="display-3 @changeCss">$@Funds @changeDisplay</span>
     </div>
+}
+else
+{
+    <span class="display-3 @cssClass">$@Funds</span>
 }

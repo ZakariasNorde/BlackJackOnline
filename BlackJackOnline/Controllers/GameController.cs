@@ -54,6 +54,13 @@ namespace BlackJackOnline.Controllers
         public async Task<IActionResult> BlackJack(string changed)
         {
             Game game = GetGameFromSession();
+            var index = 0;
+            if(changed.Contains(" "))
+            {
+                var bothCommands = changed.Split(" ");
+                index =  int.Parse(bothCommands[1]);
+                changed = bothCommands[0];
+            }
             switch (changed)
             {
                 case "start":
@@ -106,7 +113,8 @@ namespace BlackJackOnline.Controllers
                     }
                 case "stand":
                     {
-                        game.NewStand();
+                        Person player = game.hands[index];
+                        game.NewStand(player);
                         break;
                         
                     }
@@ -117,7 +125,8 @@ namespace BlackJackOnline.Controllers
                     }
                 case "hit":
                     {
-                        await game.Hit();
+                        Person player = game.hands[index];
+                        await game.Hit(player, index);
                         break;
                     }
                 case "insurance":
@@ -127,7 +136,8 @@ namespace BlackJackOnline.Controllers
                     }
                 case "double":
                     {
-                        await game.DoubleDown();
+                        Person player = game.hands[index];
+                        await game.DoubleDown(player);
                         break;
                     }
                 case "quit":
@@ -137,6 +147,12 @@ namespace BlackJackOnline.Controllers
                             await UserCollect();
                         }
                         return RedirectToAction("Index", "Home");
+                        break;
+                    }
+                case "split":
+                    {
+                        Person player = game.hands[index];
+                        game.Split(player);
                         break;
                     }
             }
@@ -156,6 +172,11 @@ namespace BlackJackOnline.Controllers
             {
                 return null;
             }
+        }
+
+        public IActionResult PlaceBets()
+        {
+            return View();
         }
 
         private async Task UserCollect()
