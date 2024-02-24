@@ -8,6 +8,7 @@ namespace BlackJackOnline.Models
 
         public decimal Bet { get; set; }
 
+		public bool ActiveHand {  get; set; }
         public bool Standing { get; set; }
         public int visibleScore 
 		{

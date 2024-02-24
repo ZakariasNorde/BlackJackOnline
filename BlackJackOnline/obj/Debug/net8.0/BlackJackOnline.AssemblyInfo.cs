@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BlackJackOnline")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9134f196bd608f4515e5100c19ebe35f5b2fdc09")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("BlackJackOnline")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BlackJackOnline")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

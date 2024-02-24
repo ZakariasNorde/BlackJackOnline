@@ -151,8 +151,8 @@ namespace BlackJackOnline.Controllers
                     }
                 case "split":
                     {
-                        game.Split();
-                        //fixa split kod här
+                        Person player = game.hands[index];
+                        game.Split(player);
                         break;
                     }
             }
@@ -172,6 +172,11 @@ namespace BlackJackOnline.Controllers
             {
                 return null;
             }
+        }
+
+        public IActionResult PlaceBets()
+        {
+            return View();
         }
 
         private async Task UserCollect()

@@ -161,7 +161,7 @@
                     await Html.RenderComponentAsync<MessageComp>(RenderMode.Server, new
                     {
                         State = Model.state,
-                        Bet = Model.TotalBet 
+                        Bet = Model.player.Bet 
                     })
                     )
 
@@ -183,33 +183,16 @@
         && !Model.player.Standing)
         {
             
-            @if (Model.player.visibleScore >= 9
-           && Model.player.visibleScore <= 11
-           && Model.player.Hand.Count == 2
-           && Model.player.Funds >= Model.player.Bet * 2)
-            {
-                <br />
-                <button type="submit" name="changed" value="double" class="btn btn-warning" id="btn-Double">
-                    Double Down
-                </button>
-                
-            }
-            @if (Model.dealer.HasAceShowing && !Model.player.HasInsurance)
+           
+            @* @if (Model.dealer.HasAceShowing && !Model.player.HasInsurance)
             {
                 <br />
                 <button type="submit" name="changed" value="insurance" class="btn btn-warning" id="btn-Insurance">
                     Insurance ($@(Model.player.Bet / 2))
                 </button>
                
-            }
+            } *@
 
-                @if (Model.player.canSplit && Model.player.Funds >= Model.player.Bet * 2)
-                {
-                    <br />
-                    <button type="submit" name="changed" value="split" class="btn btn-warning" id="btn-Insurance">
-                        Split
-                    </button>
-                }
             }
         @if (Model.state == GameEnums.GameState.Payout)
         {
@@ -248,7 +231,7 @@
 
                 @if (!hand.isBusted
              && Model.state == GameEnums.GameState.InProgress
-             && !hand.Standing)
+             && !hand.Standing && hand.ActiveHand)
                 {
 
                     var standString = "stand" + " " + handIndex;
@@ -262,6 +245,26 @@
                     </button>
                    
 
+                }
+                @if (hand.visibleScore >= 9
+               && hand.visibleScore <= 11
+               && hand.Hand.Count == 2
+               && Model.player.Funds >= Model.player.Bet * 2)
+                {
+                    var doubleString = "double" + " " + handIndex;
+                    <br />
+                    <button type="submit" name="changed" value="@(doubleString)" class="btn btn-warning" id="btn-Double">
+                        Double Down
+                    </button>
+
+                }
+                @if (hand.canSplit && Model.player.Funds >= Model.player.Bet * 2)
+                {
+                    var splitString = "split" + " " + handIndex;
+                    <br />
+                    <button type="submit" name="changed" value="@(splitString)" class="btn btn-warning" id="btn-Insurance">
+                        Split
+                    </button>
                 }
                 
             

@@ -12,9 +12,10 @@
 		
 		
 
-		public Player(decimal funds)
+		public Player(decimal funds, bool Active)
 		{
 			Funds = funds;
+			ActiveHand = Active;
 		}
 
 		public void Collect()
