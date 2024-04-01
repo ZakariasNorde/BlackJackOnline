@@ -7,11 +7,18 @@
     [Parameter]
     public int score { get; set; }
 
+    [Parameter]
+    public bool HasLost { get; set; }
+
     public string cssClass
     {
         get
         {
-            if(score < 21)
+            if (HasLost)
+            {
+                return "h1Negative";
+            }
+            else if(score < 21)
             {
                 return "h1Neutral";
             }

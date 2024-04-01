@@ -59,7 +59,7 @@
             <div>
                 @if (Model.dealer != null)
                 {
-                    <component type="typeof(ScoreComp)" render-mode="ServerPrerendered" param-State="Model.state" param-score="Model.dealer.visibleScore" />
+                    <component type="typeof(ScoreComp)" render-mode="ServerPrerendered" param-State="Model.state" param-score="Model.dealer.visibleScore" param-HasLost="false"/>
 
                 }
                 @foreach (var card in Model.dealer.Hand)
@@ -96,11 +96,11 @@
     <div class="col">
         @if (Model.state == GameEnums.GameState.Betting)
         {
-            @if (Model.player.Funds < 10)
+            @if (Model.player.Funds < 10 & Model.hands.Count < 4)
             {
                 <span class="h1Negative">Out of money!</span>
             }
-            @if (Model.player.Funds >= 10)
+                @if (Model.player.Funds >= 10 & Model.hands.Count < 4)
             {
          
                 <button type="submit" name="changed" value="bet10" class="btn btn-primary" id="betButton10">
@@ -108,23 +108,47 @@
                 </button>
 
             }
-            @if (Model.player.Funds >= 20)
+                @if (Model.player.Funds >= 20 & Model.hands.Count < 4)
             {
                 <button type="submit" name="changed" value="bet20" class="btn btn-primary" id="betButton20">
                     Bet $20
                 </button>
 
             }
-            @if (Model.player.Funds >= 50)
+                @if (Model.player.Funds >= 50 & Model.hands.Count < 4)
             {
                     <button type="submit" name="changed" value="bet50" class="btn btn-primary" id="betButton50">
                     Bet $50
                 </button>
 
-            }
+                }
+                @if (Model.hands.Count >= 4)
+                {
+                    <h3 class="h3Black"> Max amount of hands </h3>
+                }
+                if (Model.hands.Count != 0)
+                {
+                    for (int i = 0; i < Model.hands.Count; i++)
+                    {
+                        var handNumb = i + 1;
+                        var idString = "hand" + handNumb;
+                        var bet = Model.hands[i].Bet;
+                        
+                        <div class="BetBox" id="@idString">
+                            <h3> Hand @handNumb </h3>
+                            <h3> Bets @bet $</h3>
+                        </div>
+                    }
+                }
+                @if (Model.hands.Count != 0)
+                {
+                <button type="submit" name="changed" value="finalizeBets" class="btn btn-primary" id="finalizeBets"> 
+                        Finalize Bets
+                </button>
+                }
         }
 
-        @if (Model.state == GameEnums.GameState.Payout)
+        @* @if (Model.state == GameEnums.GameState.Payout)
         {
                 @if (Model.player.hasBlackJack
                && (Model.player.visibleScore > Model.dealer.visibleScore || Model.dealer.isBusted))
@@ -147,7 +171,7 @@
                 {
                     <h1 class="h1Neutral">Push</h1>
                 }
-        }
+        } *@
         @if (Model.state == GameEnums.GameState.Dealing
         || Model.state == GameEnums.GameState.Shuffling
         || Model.state == GameEnums.GameState.InProgress
@@ -206,71 +230,72 @@
             }
         }
     </div>
-    @for(int handIndex = 0; handIndex < Model.hands.Count; handIndex++)
+    @* each player hand *@
+    @if (Model.state != GameEnums.GameState.Betting)
+        {
+            @for (int handIndex = 0; handIndex < Model.hands.Count; handIndex++)
             {
-            var hand = Model.hands[handIndex];
-            <div class="col">
-            
-             <component type="typeof(ScoreComp)" render-mode="ServerPrerendered" param-State="Model.state" param-score="hand.visibleScore" />
-   
-            @foreach (var card in hand.Hand)
-                {
+                var hand = Model.hands[handIndex];
+                <div class="col">
 
-                    @if (card.IsVisible)
+                    <component type="typeof(ScoreComp)" render-mode="ServerPrerendered" param-State="Model.state" param-score="hand.visibleScore" param-HasLost="hand.HasLost" />
+                    <component type="typeof(HandMoneyComp)" render-mode="ServerPrerendered" param-Bet="hand.Bet" param-HasLost="hand.HasLost"/>
+
+                    @foreach (var card in hand.Hand)
                     {
-                        string imageSrc = $"{@Url.Content("~/images/pokercards/")}{card.ImageName.ToLower()}";
-                        <img class="blackjack-card" src=@imageSrc />
-					
-       
+                        
+                        @if (card.IsVisible)
+                        {
+                            string imageSrc = $"{@Url.Content("~/images/pokercards/")}{card.ImageName.ToLower()}";
+                            <img class="blackjack-card" src=@imageSrc />
+
+                        }
+                        else
+                        {
+                            <img class="blackjack-card " src="~/images/pokercards/CardBackFinal.png" />
+                        }
                     }
-                    else
+
+                    @if (!hand.isBusted
+                   && Model.state == GameEnums.GameState.InProgress
+                   && !hand.Standing && hand.ActiveHand)
                     {
-                    <img class="blackjack-card " src="~/images/pokercards/CardBackFinal.png" />
+
+                        var standString = "stand" + " " + handIndex;
+                        var hitString = "hit" + " " + handIndex;
+
+                        <button type="submit" name="changed" value="@(standString)" class="btn btn-primary" id="btn-Stand">
+                            Stand
+                        </button>
+                        <button type="submit" name="changed" value="@(hitString)" class="btn btn-primary" id="btn-Hit">
+                            Hit
+                        </button>
                     }
-                }
+                    @if (hand.visibleScore >= 9
+                     && hand.visibleScore <= 11
+                     && hand.Hand.Count == 2
+                     && Model.player.Funds >= Model.player.Bet * 2)
+                    {
+                        var doubleString = "double" + " " + handIndex;
+                        <br />
+                        <button type="submit" name="changed" value="@(doubleString)" class="btn btn-warning" id="btn-Double">
+                            Double Down
+                        </button>
 
-                @if (!hand.isBusted
-             && Model.state == GameEnums.GameState.InProgress
-             && !hand.Standing && hand.ActiveHand)
-                {
+                    }
+                    @if (hand.canSplit && Model.player.Funds >= Model.player.Bet * 2)
+                    {
+                        var splitString = "split" + " " + handIndex;
+                        <br />
+                        <button type="submit" name="changed" value="@(splitString)" class="btn btn-warning" id="btn-Insurance">
+                            Split
+                        </button>
+                    }
 
-                    var standString = "stand" + " " + handIndex;
-                    var hitString = "hit" + " " + handIndex;
-
-                    <button type="submit" name="changed" value="@(standString)" class="btn btn-primary" id="btn-Stand">
-                        Stand
-                    </button>
-                    <button type="submit" name="changed" value="@(hitString)" class="btn btn-primary" id="btn-Hit">
-                        Hit
-                    </button>
-                   
-
-                }
-                @if (hand.visibleScore >= 9
-               && hand.visibleScore <= 11
-               && hand.Hand.Count == 2
-               && Model.player.Funds >= Model.player.Bet * 2)
-                {
-                    var doubleString = "double" + " " + handIndex;
-                    <br />
-                    <button type="submit" name="changed" value="@(doubleString)" class="btn btn-warning" id="btn-Double">
-                        Double Down
-                    </button>
-
-                }
-                @if (hand.canSplit && Model.player.Funds >= Model.player.Bet * 2)
-                {
-                    var splitString = "split" + " " + handIndex;
-                    <br />
-                    <button type="submit" name="changed" value="@(splitString)" class="btn btn-warning" id="btn-Insurance">
-                        Split
-                    </button>
-                }
-                
-            
-    </div>
-    }
-    @* <div class="col-3">
+                </div>
+            }
+        }
+        @* <div class="col-3">
             <component type="typeof(ScoreComp)" render-mode="ServerPrerendered" param-State="Model.state" param-score="Model.player.visibleScore" />
     </div> *@
     </div>

@@ -16,6 +16,7 @@
 		{
 			Funds = funds;
 			ActiveHand = Active;
+			HasLost = false;
 		}
 
 		public void Collect()
