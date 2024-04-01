@@ -30,6 +30,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcG9uZW50c1xIYW5kQ29tcC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/GitHub/C\# VS/BlackJack/BlackJackOnline/BlackJackOnline/Views/Components/HandMoneyComp.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcG9uZW50c1xIYW5kTW9uZXlDb21wLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/GitHub/C\# VS/BlackJack/BlackJackOnline/BlackJackOnline/Views/Components/HandResultComp.razor]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcG9uZW50c1xIYW5kUmVzdWx0Q29tcC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -56,10 +60,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/GitHub/C\# VS/BlackJack/BlackJackOnline/BlackJackOnline/Views/Game/BlackJack.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR2FtZVxCbGFja0phY2suY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/GitHub/C\# VS/BlackJack/BlackJackOnline/BlackJackOnline/Views/Game/PlaceBets.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR2FtZVxQbGFjZUJldHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/GitHub/C\# VS/BlackJack/BlackJackOnline/BlackJackOnline/Views/Home/Index.cshtml]

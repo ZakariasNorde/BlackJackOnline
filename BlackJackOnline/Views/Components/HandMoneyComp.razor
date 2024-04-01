@@ -1,0 +1,24 @@
+﻿@using BlackJack.Models;
+@code {
+    [Parameter]
+    public decimal Bet { get; set; }
+
+    [Parameter]
+    public bool HasLost { get; set; }
+
+    public string cssClass { get; set; }
+
+}
+
+@if(HasLost)
+{
+    cssClass = "h3Negative";
+}
+else
+{
+    cssClass = "h3Positive";
+}
+
+
+    <h3 class="@cssClass"> @Bet $</h3>
+

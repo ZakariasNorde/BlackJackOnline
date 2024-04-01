@@ -39,8 +39,7 @@ namespace BlackJackOnline.Controllers
                 
                 HttpContext.Session.SetString("gameId", gameId.ToString());
                 Game game = GetGameFromSession();
-                //varför är denna variabeln 0 även fast players funds blir 500 i båda konstruktorerna
-                decimal funds = game.player.Funds;
+                decimal funds = game.player.Funds;  // varför är denna variabeln 0 även fast players funds blir 500 i båda konstruktorerna
                 return View(game);
             }
             catch (Exception ex)
@@ -78,17 +77,22 @@ namespace BlackJackOnline.Controllers
                     }
                 case "bet10":
                     {
-                        await game.Bet(10);
+                        game.AddHand(10);
                         break;
                     }
                 case "bet20":
                     {
-                        await game.Bet(20);
+                        game.AddHand(20);
                         break;
                     }
                 case "bet50":
                     {
-                        await game.Bet(50);
+                        game.AddHand(50);
+                        break;
+                    }
+                case "finalizeBets":
+                    {
+                        await game.DealFirst();
                         break;
                     }
                 case "dealingSecond":
@@ -174,8 +178,10 @@ namespace BlackJackOnline.Controllers
             }
         }
 
-        public IActionResult PlaceBets()
+        public IActionResult PlaceBets(decimal funds)
         {
+
+            ViewBag.Funds = funds;
             return View();
         }
 

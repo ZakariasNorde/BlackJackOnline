@@ -2,6 +2,12 @@
 {
     public class PlaceBetsViewModel
     {
-        public List<decimal> Bets { get; set; }
+        public decimal bet1 { get; set; }
+
+        public decimal bet2 { get; set;}
+
+        public decimal bet3 { get; set;}    
+
+        public decimal bet4 { get; set;}
     }
 }
