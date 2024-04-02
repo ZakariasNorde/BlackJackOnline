@@ -240,22 +240,7 @@
 
                     <component type="typeof(ScoreComp)" render-mode="ServerPrerendered" param-State="Model.state" param-score="hand.visibleScore" param-HasLost="hand.HasLost" />
                     <component type="typeof(HandMoneyComp)" render-mode="ServerPrerendered" param-Bet="hand.Bet" param-HasLost="hand.HasLost"/>
-
-                    @foreach (var card in hand.Hand)
-                    {
-                        
-                        @if (card.IsVisible)
-                        {
-                            string imageSrc = $"{@Url.Content("~/images/pokercards/")}{card.ImageName.ToLower()}";
-                            <img class="blackjack-card" src=@imageSrc />
-
-                        }
-                        else
-                        {
-                            <img class="blackjack-card " src="~/images/pokercards/CardBackFinal.png" />
-                        }
-                    }
-
+                    <div class="buttonsContainer">
                     @if (!hand.isBusted
                    && Model.state == GameEnums.GameState.InProgress
                    && !hand.Standing && hand.ActiveHand)
@@ -291,6 +276,24 @@
                             Split
                         </button>
                     }
+                    </div>
+                    <div class="cardContainer">
+                    @foreach (var card in hand.Hand)
+                    {
+                        
+                        @if (card.IsVisible)
+                        {
+                            string imageSrc = $"{@Url.Content("~/images/pokercards/")}{card.ImageName.ToLower()}";
+                            <img class="blackjack-card" src=@imageSrc />
+
+                        }
+                        else
+                        {
+                            <img class="blackjack-card " src="~/images/pokercards/CardBackFinal.png" />
+                        }
+                    }
+                    </div>
+                    
 
                 </div>
             }
