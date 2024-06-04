@@ -240,7 +240,42 @@
 
                     <component type="typeof(ScoreComp)" render-mode="ServerPrerendered" param-State="Model.state" param-score="hand.visibleScore" param-HasLost="hand.HasLost" />
                     <component type="typeof(HandMoneyComp)" render-mode="ServerPrerendered" param-Bet="hand.Bet" param-HasLost="hand.HasLost"/>
+                    <div class="buttonsContainer">
+                    @if (!hand.isBusted
+                     && Model.state == GameEnums.GameState.InProgress
+                     && !hand.Standing && hand.ActiveHand)
+                        {
 
+                            var standString = "stand" + " " + handIndex;
+                            var hitString = "hit" + " " + handIndex;
+
+                            <button type="submit" name="changed" value="@(standString)" class="btn btn-primary" id="btn-Stand">
+                                Stand
+                            </button>
+                            <button type="submit" name="changed" value="@(hitString)" class="btn btn-primary" id="btn-Hit">
+                                Hit
+                            </button>
+
+                            @if (hand.Hand.Count == 2 && Model.player.Funds >= Model.player.Bet * 2)
+                            {
+                                var doubleString = "double" + " " + handIndex;
+                                <br />
+                                <button type="submit" name="changed" value="@(doubleString)" class="btn btn-warning" id="btn-Double">
+                                    Double Down
+                                </button>
+
+                            }
+                            @if (hand.canSplit && Model.player.Funds >= Model.player.Bet * 2)
+                            {
+                                var splitString = "split" + " " + handIndex;
+                                <br />
+                                <button type="submit" name="changed" value="@(splitString)" class="btn btn-warning" id="btn-Insurance">
+                                    Split
+                                </button>
+                            }
+                        }
+                    </div>
+                    <div class="cardContainer">
                     @foreach (var card in hand.Hand)
                     {
                         
@@ -255,42 +290,8 @@
                             <img class="blackjack-card " src="~/images/pokercards/CardBackFinal.png" />
                         }
                     }
-
-                    @if (!hand.isBusted
-                   && Model.state == GameEnums.GameState.InProgress
-                   && !hand.Standing && hand.ActiveHand)
-                    {
-
-                        var standString = "stand" + " " + handIndex;
-                        var hitString = "hit" + " " + handIndex;
-
-                        <button type="submit" name="changed" value="@(standString)" class="btn btn-primary" id="btn-Stand">
-                            Stand
-                        </button>
-                        <button type="submit" name="changed" value="@(hitString)" class="btn btn-primary" id="btn-Hit">
-                            Hit
-                        </button>
-                    }
-                    @if (hand.visibleScore >= 9
-                     && hand.visibleScore <= 11
-                     && hand.Hand.Count == 2
-                     && Model.player.Funds >= Model.player.Bet * 2)
-                    {
-                        var doubleString = "double" + " " + handIndex;
-                        <br />
-                        <button type="submit" name="changed" value="@(doubleString)" class="btn btn-warning" id="btn-Double">
-                            Double Down
-                        </button>
-
-                    }
-                    @if (hand.canSplit && Model.player.Funds >= Model.player.Bet * 2)
-                    {
-                        var splitString = "split" + " " + handIndex;
-                        <br />
-                        <button type="submit" name="changed" value="@(splitString)" class="btn btn-warning" id="btn-Insurance">
-                            Split
-                        </button>
-                    }
+                    </div>
+                    
 
                 </div>
             }

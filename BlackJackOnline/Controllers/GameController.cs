@@ -130,7 +130,7 @@ namespace BlackJackOnline.Controllers
                 case "hit":
                     {
                         Person player = game.hands[index];
-                        await game.Hit(player, index);
+                        await game.Hit(player);
                         break;
                     }
                 case "insurance":
