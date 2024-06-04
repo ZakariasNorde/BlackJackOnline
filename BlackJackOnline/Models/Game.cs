@@ -52,7 +52,7 @@ namespace BlackJackOnline.Models
 
 		public async Task InitializeHand()
 		{
-			if (dealer.Deck.Count < 13)
+			if (dealer.Deck.Count < 25)
 			{
 				state = GameEnums.GameState.Shuffling;
 				dealer.Deck = new CardDeck();
@@ -138,14 +138,24 @@ namespace BlackJackOnline.Models
 		public async Task DealerTurn()
 		{
 			state = GameEnums.GameState.DealerTurn;
-			if (dealer.visibleScore < 17)
+			var openList = dealer.Hand.Where(h => h.IsVisible == true).ToList();
+			if (openList.Count == 1)
 			{
-				await dealer.DealOpenToSelf();
-				//await DealerTurn();
+				DealerRevealFirst();
 			}
 			else
 			{
-				NewEndHand();
+
+
+				if (dealer.visibleScore < 17)
+				{
+					await dealer.DealOpenToSelf();
+					//await DealerTurn();
+				}
+				else
+				{
+					NewEndHand();
+				}
 			}
 
 		}
@@ -155,48 +165,28 @@ namespace BlackJackOnline.Models
 			dealer.OpenFirst();
 		}
 
-		public async Task Hit(Person hand)
-		{
-			await dealer.DealOpenToPlayer(player);
-			if (player.isBusted)
-			{
-				NewEndHand();
-			}
-			if(player.visibleScore == 21)
-			{
-				NewStand(hand);
-			}
-		}
 
         //nytt för split funktion test
-        public async Task Hit(Person hand, int index)
+        public async Task Hit(Person hand)
 		{
             await dealer.DealOpenToPlayer(hand);
 
-			if (index < (hands.Count - 1))
-			{
-
-				if (hand.isBusted)
-				{
-					
-				}
-				if (hand.visibleScore == 21)
-				{
-					NewStand(hand);
-				}
-			}
-
-			else
-			{
-                if (hand.isBusted)
+                if (hand.isBusted && FindActive() == null)
                 {
-                    NewEndHand();
-                }
+					if (dealer.visibleScore < 17)
+					{
+						state = GameEnums.GameState.DealerTurn;
+					}
+					else
+					{
+						NewEndHand();
+					}
+            }
                 if (hand.visibleScore == 21)
                 {
                     NewStand(hand);
                 }
-            }
+        
 			
         }
 
@@ -276,7 +266,12 @@ namespace BlackJackOnline.Models
 		}
 		public async Task DoubleDown(Person hand)
 		{
+
 			hand.Standing = true;
+
+			var raisedSum = hand.Bet;
+
+			player.Funds -= raisedSum;
 
 			hand.Bet *= 2;
 
@@ -320,18 +315,18 @@ namespace BlackJackOnline.Models
                 if (hand.hasBlackJack && !dealer.hasBlackJack)
                 {
                     //Player gets their bet back, plus 1.5 * the bet
-                    player.Change += hand.Bet * 1.5M;
+                    player.Change += hand.Bet + (hand.Bet * 1.5M);
                 }
                 else if (!hand.isBusted && dealer.isBusted)
                 {
-                    player.Change += hand.Bet;
+                    player.Change += (hand.Bet * 2);
                 }
                 else if (!dealer.isBusted
                          && !hand.isBusted
                          && hand.visibleScore > dealer.visibleScore)
                 {
 
-                    player.Change += hand.Bet;
+                    player.Change += (hand.Bet * 2);
                 }
                 else if (!dealer.isBusted
                          && !hand.isBusted
@@ -342,7 +337,6 @@ namespace BlackJackOnline.Models
                 //in all other cases the player loses
                 else
                 {
-                    player.Change += hand.Bet * -1;
 					hand.HasLost = true;
                 }
             }
@@ -407,6 +401,7 @@ namespace BlackJackOnline.Models
 			Card card2 = hand.Hand[1];
 			hand.Hand.RemoveAt(1);
 			decimal bet = hand.Bet;
+			player.Funds -= bet;
 			Player hand2 = new Player(bet, true);
 			hand2.Bet = hand2.Funds;
 			hand2.Hand.Add(card2);
@@ -421,6 +416,7 @@ namespace BlackJackOnline.Models
 			Player hand = new Player(bet, true);
 			hand.Bet = bet;
 			hands.Add(hand);
+			player.Funds -= bet;
 		}
 
 		public async Task DealToHand(Person hand)
