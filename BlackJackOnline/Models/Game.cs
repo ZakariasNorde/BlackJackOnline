@@ -332,7 +332,7 @@ namespace BlackJackOnline.Models
                          && !hand.isBusted
                          && hand.visibleScore == dealer.visibleScore)
                 {
-                    //push nothing happens
+					player.Change += hand.Bet;
                 }
                 //in all other cases the player loses
                 else
@@ -343,39 +343,7 @@ namespace BlackJackOnline.Models
             player.Bet = 0;
             player.Standing = false;
         }
-			public void EndHand()
-			{
-				state = GameEnums.GameState.Payout;
-				if (player.hasBlackJack && !dealer.hasBlackJack)
-				{
-					//Player gets their bet back, plus 1.5 * the bet
-					player.Change += player.Bet * 1.5M;
-				}
-				else if (!player.isBusted && dealer.isBusted)
-				{
-					player.Change += player.Bet;
-				}
-				else if (!dealer.isBusted
-						 && !player.isBusted
-						 && player.visibleScore > dealer.visibleScore)
-				{
-
-					player.Change += player.Bet;
-				}
-				else if (!dealer.isBusted
-						 && !player.isBusted
-						 && player.visibleScore == dealer.visibleScore)
-				{
-					//push nothing happens
-				}
-				//in all other cases the player loses
-				else
-				{
-					player.Change += player.Bet * -1;
-				}
-				player.Bet = 0;
-				player.Standing = false;
-			}
+			
 
 			public async Task NewHand()
 			{
