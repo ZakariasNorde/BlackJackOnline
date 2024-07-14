@@ -93,6 +93,13 @@ namespace BlackJackOnline.Controllers
                 case "finalizeBets":
                     {
                         await game.DealFirst();
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            var userName = User.Identity.Name;
+                            var user = await _userManager.FindByNameAsync(userName);
+                            user.Funds -= game.TotalBet;
+                            _siteContext.SaveChanges();
+                        }
                         break;
                     }
                 case "dealingSecond":
