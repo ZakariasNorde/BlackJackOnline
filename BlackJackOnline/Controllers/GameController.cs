@@ -65,7 +65,7 @@ namespace BlackJackOnline.Controllers
                 case "start":
                     {
                         //Ifall user inte trycker på keep going kommer de fortfarande få vinsten till sitt konto
-                        //fixa på nåt sätt så att usercollect körs automatiskt
+                        //fixa på nåt sätt så att usercollect körs automatiskt 
                         //kan även lägga till en annan knapp än keep going också som också kör Usercollect
                         if (User.Identity.IsAuthenticated)
                         {

@@ -19,15 +19,13 @@ document.addEventListener('DOMContentLoaded', function () {
         if (cardCount <= 8) {
             cardWidth = '140px';
             cardHeight = '190px';
-        } else if (cardCount <= 14) {
+        } else if (cardCount <= 12) {
             cardWidth = '112px';
             cardHeight = '152px';
-        } else if (cardCount <= 20) {
+        }
+         else {
             cardWidth = '93px';
             cardHeight = '126px';
-        } else {
-            cardWidth = '80px';
-            cardHeight = '108px';
         }
 
 
