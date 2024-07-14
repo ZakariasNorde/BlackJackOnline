@@ -254,9 +254,9 @@
                             </button>
                             <button type="submit" name="changed" value="@(hitString)" class="btn btn-primary" id="btn-Hit">
                                 Hit
-                            </button>
+                            </button> 
 
-                            @if (hand.Hand.Count == 2 && Model.player.Funds >= Model.player.Bet * 2)
+                            @if (hand.Hand.Count == 2 && Model.player.Funds >= hand.Bet)
                             {
                                 var doubleString = "double" + " " + handIndex;
                                 <br />
@@ -265,7 +265,7 @@
                                 </button>
 
                             }
-                            @if (hand.canSplit && Model.player.Funds >= Model.player.Bet * 2)
+                            @if (hand.canSplit && Model.player.Funds >= Model.player.Bet)
                             {
                                 var splitString = "split" + " " + handIndex;
                                 <br />
